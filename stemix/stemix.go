@@ -14,12 +14,10 @@ import (
 
 type Analyse struct {
   Word string
-  Form string // example vcvcvc. Where v = vowel and c = consonant
+  VowCon string // example vcvcvc. Where v = vowel and c = consonant
   Measure int // Number of times the pair vc appears
 }
-func (a *Analyse) String() string {
-  return fmt.Sprintf("%s %s %s", a.Word, a.Form, a.Measure)
-}
+
 
 // returns type Analyse
 func Form(w string) Analyse {
@@ -41,13 +39,29 @@ func Form(w string) Analyse {
   str := strings.Join(inx, "")
   var anl Analyse // Instance of Analyse.
   anl.Word  = w
-  anl.Form = str
+  anl.VowCon = str
   anl.Measure = strings.Count(str, "vc")
 
   return anl
 }
 
+// implementation of String Method and so Stringer interface
+func (a *Analyse) String() string {
+  return fmt.Sprintf("%s %s %s", a.Word, a.VowCon, a.Measure)
+}
 
+// Method HasVowel returns bool (*v*)
+func (a *Analyse) HasVowel() bool {
+  return strings.Contains(a.VowCon, "v")
+}
+
+// Method HasConsonant returns bool (*c*)
+func (a *Analyse) HasConsonant() bool {
+  return strings.Contains(a.VowCon, "c")
+}
+
+
+// Step 1A according the stemmer doc.
 func (a *Analyse) Step_1a() string {
   var str string
 
@@ -72,11 +86,50 @@ func (a *Analyse) Step_1a() string {
     str = pre + "ss"
   }
 
-  // For S suffix. S -> S
+  // For S suffix. S ->
   s := strings.HasSuffix(a.Word, "s")
   if s == true && sses == false && ies == false && ss == false {
     pre := strings.TrimSuffix(a.Word, "s")
     str = pre
+  }
+
+  return str
+}
+
+
+// Step 1B according the stemmer doc.
+func (a *Analyse) Step_1b() string {
+  var str string
+
+  // Word Measure (m > 0) and EED suffix. EED -> EE
+  eed := strings.HasSuffix(a.Word, "eed")
+  if eed == true && a.Measure > 0 {
+    pre := strings.TrimSuffix(a.Word, "eed")
+    str = pre + "ee"
+  }
+
+  // Word has Vowel and ED suffix. ED ->
+  ed := strings.HasSuffix(a.Word, "ed")
+  if a.HasVowel() == true && ed == true && eed == false {
+    // word exception
+    if a.Word == "bled" {
+      str = "bled"
+    }else {
+      pre := strings.TrimSuffix(a.Word, "ed")
+      str = pre
+    }
+  }
+
+  // Word has Vowel and ING suffix. ING ->
+  ing := strings.HasSuffix(a.Word, "ing")
+  if a.HasVowel() == true && ing == true {
+    // word exception
+    if a.Word == "sing" {
+      str = "sing"
+    }else {
+      pre := strings.TrimSuffix(a.Word, "ing")
+      str = pre
+    }
   }
 
   return str
