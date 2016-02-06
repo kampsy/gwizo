@@ -60,6 +60,24 @@ func (a *Analyse) HasConsonant() bool {
   return strings.Contains(a.VowCon, "c")
 }
 
+// Measure = 1 and VowCon pattern ends with cvc, where second c is not
+// W, X, y
+func (a *Analyse) HasM1Endscvc() bool {
+  cvc := strings.HasSuffix(a.VowCon, "cvc")
+  wlen := len(a.Word)
+  lastLetter := a.Word[(wlen - 1)]
+  str := string(lastLetter)
+  w := strings.Contains(str, "w")
+  x := strings.Contains(str, "x")
+  y := strings.Contains(str, "y")
+
+  if cvc == true && w == false && x == false && y == false {
+    return true
+  }else {
+    return false
+  }
+}
+
 
 // Step 1A according the stemmer doc.
 func (a *Analyse) Step_1a() string {
@@ -130,6 +148,13 @@ func (a *Analyse) Step_1b() string {
       pre := strings.TrimSuffix(a.Word, "ing")
       str = pre
     }
+  }
+
+  // If the second or third of the above rules is successful the following
+  // is done.
+  at := strings.HasSuffix(a.Word, "at")
+  if at == true || ing == true || ed == true && a.HasM1Endscvc() == true {
+    str = str + "e"
   }
 
   return str
