@@ -62,7 +62,6 @@ func (a *Analyse) HasConsonant() bool {
 
 // Measure value is grater than 0
 func (a *Analyse) HasMeaGreater0() bool {
-  fmt.Println(a.Measure)
   if a.Measure > 0 {
     return true
   }else {
@@ -75,7 +74,6 @@ func (a *Analyse) HasMeaGreater0() bool {
 func HasEndcvcNotwxy(str string) bool {
   nest := Form(str)
   cvc := strings.HasSuffix(nest.VowCon, "cvc")
-  fmt.Println(nest.VowCon)
   wlen := len(nest.Word)
   lastLetter := nest.Word[(wlen - 1)]
   word := string(lastLetter)
@@ -93,7 +91,6 @@ func HasEndcvcNotwxy(str string) bool {
 // Measure value = 1
 func HasMeasure1(str string) bool {
   nest := Form(str)
-  fmt.Println(nest.Measure)
   if nest.Measure == 1 {
     return true
   }else {
@@ -110,7 +107,11 @@ func HasDoubleConsonant(str string) bool {
 }
 
 
-/* Step 1A according the stemmer doc.*/
+/*
+Step 1 deals with plurals and past participles. The subsequent steps are
+much more straightforward.
+Step 1A according the stemmer doc.
+======================================*/
 func (a *Analyse) Step_1a() string {
   var str string
 
@@ -268,7 +269,210 @@ func (a *Analyse) Step_2() string {
       str = pre + "ate"
     }
 
+    // For TIONAL suffix. TIONAL -> TION
+    tional := strings.HasSuffix(a.Word, "tional")
+    if tional == true {
+      pre := strings.TrimSuffix(a.Word, "tional")
+      str = pre + "tion"
+    }
+
+    // For ENCI suffix. ENCI -> ENCE
+    enci := strings.HasSuffix(a.Word, "enci")
+    if enci == true {
+      pre := strings.TrimSuffix(a.Word, "enci")
+      str = pre + "ence"
+    }
+
+    // For ANCI suffix. ANCI -> ANCE
+    anci := strings.HasSuffix(a.Word, "anci")
+    if anci == true {
+      pre := strings.TrimSuffix(a.Word, "anci")
+      str = pre + "ance"
+    }
+
+    // For IZER suffix. IZER -> IZE
+    izer := strings.HasSuffix(a.Word, "izer")
+    if izer == true {
+      pre := strings.TrimSuffix(a.Word, "izer")
+      str = pre + "ize"
+    }
+
+    // For ABLI suffix. ABLI -> ABLE
+    abli := strings.HasSuffix(a.Word, "abli")
+    if abli == true {
+      pre := strings.TrimSuffix(a.Word, "abli")
+      str = pre + "able"
+    }
+
+    // For ALLI suffix. ALLI -> AL
+    alli := strings.HasSuffix(a.Word, "alli")
+    if alli == true {
+      pre := strings.TrimSuffix(a.Word, "alli")
+      str = pre + "al"
+    }
+
+    // For ENTLI suffix. ENTLI -> ENT
+    entli := strings.HasSuffix(a.Word, "entli")
+    if entli == true {
+      pre := strings.TrimSuffix(a.Word, "entli")
+      str = pre + "ent"
+    }
+
+    // For ELI suffix. ELI -> E
+    eli := strings.HasSuffix(a.Word, "eli")
+    if eli == true {
+      pre := strings.TrimSuffix(a.Word, "eli")
+      str = pre + "e"
+    }
+
+    // For OUSLI suffix. OUSLI -> OUS
+    ousli := strings.HasSuffix(a.Word, "ousli")
+    if ousli == true {
+      pre := strings.TrimSuffix(a.Word, "ousli")
+      str = pre + "ous"
+    }
+
+    // For IZATION suffix. IZATION -> IZE
+    ization := strings.HasSuffix(a.Word, "ization")
+    if ization == true {
+      pre := strings.TrimSuffix(a.Word, "ization")
+      str = pre + "ize"
+    }
+
+    // For ATION suffix. ATION -> ATE
+    ation := strings.HasSuffix(a.Word, "ation")
+    if ation == true {
+      pre := strings.TrimSuffix(a.Word, "ation")
+      str = pre + "ate"
+    }
+
+    // For ATOR suffix. ATOR -> ATE
+    ator := strings.HasSuffix(a.Word, "ator")
+    if ator == true {
+      pre := strings.TrimSuffix(a.Word, "ator")
+      str = pre + "ate"
+    }
+
+    // For ALISM suffix. ALISM -> AL
+    alism := strings.HasSuffix(a.Word, "alism")
+    if alism == true {
+      pre := strings.TrimSuffix(a.Word, "alism")
+      str = pre + "al"
+    }
+
+    // For IVENESS suffix. IVENESS -> IVE
+    iveness := strings.HasSuffix(a.Word, "iveness")
+    if iveness == true {
+      pre := strings.TrimSuffix(a.Word, "iveness")
+      str = pre + "ive"
+    }
+
+    // For FULNESS suffix. FULNESS -> FUL
+    fulness := strings.HasSuffix(a.Word, "fulness")
+    if fulness == true {
+      pre := strings.TrimSuffix(a.Word, "fulness")
+      str = pre + "ful"
+    }
+
+    // For OUSNESS suffix. OUSNESS -> OUS
+    ousness := strings.HasSuffix(a.Word, "ousness")
+    if ousness == true {
+      pre := strings.TrimSuffix(a.Word, "ousness")
+      str = pre + "ous"
+    }
+
+    // For ALITI suffix. ALITI -> AL
+    aliti := strings.HasSuffix(a.Word, "aliti")
+    if aliti == true {
+      pre := strings.TrimSuffix(a.Word, "aliti")
+      str = pre + "al"
+    }
+
+    // For IVITI suffix. IVITI -> IVE
+    iviti := strings.HasSuffix(a.Word, "iviti")
+    if iviti == true {
+      pre := strings.TrimSuffix(a.Word, "iviti")
+      str = pre + "ive"
+    }
+
+    // For BILITI suffix. BILITI -> BLE
+    biliti := strings.HasSuffix(a.Word, "biliti")
+    if biliti == true {
+      pre := strings.TrimSuffix(a.Word, "biliti")
+      str = pre + "ble"
+    }
+
   }
 
   return str
+}
+
+
+/*Step 3 according the stemmer doc.
+=====================================*/
+func (a *Analyse) Step_3() string {
+  var str string
+
+  if a.HasMeaGreater0() == true {
+    // For ICATE suffix. ICATE -> IC
+    icate := strings.HasSuffix(a.Word, "icate")
+    if icate == true {
+      pre := strings.TrimSuffix(a.Word, "icate")
+      str = pre + "ic"
+    }
+
+    // For ATIVE suffix. ATIVE ->
+    ative := strings.HasSuffix(a.Word, "ative")
+    if ative == true {
+      pre := strings.TrimSuffix(a.Word, "ative")
+      str = pre
+    }
+
+    // For ALIZE suffix. ALIZE -> AL
+    alize := strings.HasSuffix(a.Word, "alize")
+    if alize == true {
+      pre := strings.TrimSuffix(a.Word, "alize")
+      str = pre + "al"
+    }
+
+    // For ICITI suffix. ICITI -> IC
+    iciti := strings.HasSuffix(a.Word, "iciti")
+    if iciti == true {
+      pre := strings.TrimSuffix(a.Word, "iciti")
+      str = pre + "ic"
+    }
+
+    // For ICAL suffix. ICAL -> IC
+    ical := strings.HasSuffix(a.Word, "ical")
+    if ical == true {
+      pre := strings.TrimSuffix(a.Word, "ical")
+      str = pre + "ic"
+    }
+
+    // For FUL suffix. FUL ->
+    ful := strings.HasSuffix(a.Word, "ful")
+    if ful == true {
+      pre := strings.TrimSuffix(a.Word, "ful")
+      str = pre
+    }
+
+    // For NESS suffix. NESS ->
+    ness := strings.HasSuffix(a.Word, "ness")
+    if ness == true {
+      pre := strings.TrimSuffix(a.Word, "ness")
+      str = pre
+    }
+
+  }
+
+  return str
+}
+
+
+
+/*Step 4 according the stemmer doc.
+The suffixes will now be removed
+=====================================*/
+func (a *Analyse) Step_4() string {
+  
 }

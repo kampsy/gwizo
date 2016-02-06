@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-  val := stemix.Form("relational")
-  fmt.Println(val.Step_2())
+  val := stemix.Form("goodness")
+  fmt.Println(val.Step_3())
 }
