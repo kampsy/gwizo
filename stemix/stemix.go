@@ -1,7 +1,7 @@
 /*
-Arach is the implementation of the porter stemmer algorithm in go. Specificaly
+stemix is the implementation of the porter stemmer algorithm in go. Specificaly
 the suffix stripping. M.F.Porter 1980
-Arach does not use a stem dictionary. It reads a documents and returns a slice
+stemix does not use a stem dictionary. It reads a documents and returns a slice
 of stems
 */
 package stemix
@@ -60,16 +60,28 @@ func (a *Analyse) HasConsonant() bool {
   return strings.Contains(a.VowCon, "c")
 }
 
-// Measure = 1 and VowCon pattern ends with cvc, where second c is not
-// W, X, y
-func (a *Analyse) HasM1Endscvc() bool {
-  cvc := strings.HasSuffix(a.VowCon, "cvc")
-  wlen := len(a.Word)
-  lastLetter := a.Word[(wlen - 1)]
-  str := string(lastLetter)
-  w := strings.Contains(str, "w")
-  x := strings.Contains(str, "x")
-  y := strings.Contains(str, "y")
+// Measure value is grater than 0
+func (a *Analyse) HasMeaGreater0() bool {
+  fmt.Println(a.Measure)
+  if a.Measure > 0 {
+    return true
+  }else {
+    return false
+  }
+}
+
+// Function checks if VowCon pattern ends with cvc, where second c is not
+// W, X, Y
+func HasEndcvcNotwxy(str string) bool {
+  nest := Form(str)
+  cvc := strings.HasSuffix(nest.VowCon, "cvc")
+  fmt.Println(nest.VowCon)
+  wlen := len(nest.Word)
+  lastLetter := nest.Word[(wlen - 1)]
+  word := string(lastLetter)
+  w := strings.Contains(word, "w")
+  x := strings.Contains(word, "x")
+  y := strings.Contains(word, "y")
 
   if cvc == true && w == false && x == false && y == false {
     return true
@@ -78,8 +90,27 @@ func (a *Analyse) HasM1Endscvc() bool {
   }
 }
 
+// Measure value = 1
+func HasMeasure1(str string) bool {
+  nest := Form(str)
+  fmt.Println(nest.Measure)
+  if nest.Measure == 1 {
+    return true
+  }else {
+    return false
+  }
+}
 
-// Step 1A according the stemmer doc.
+// Function accepts a string as an argument, checks if it has double consonant
+// as suffix and returns a boolean
+func HasDoubleConsonant(str string) bool {
+  nest := Form(str)
+  cc := strings.HasSuffix(nest.VowCon, "cc")
+  return cc
+}
+
+
+/* Step 1A according the stemmer doc.*/
 func (a *Analyse) Step_1a() string {
   var str string
 
@@ -115,7 +146,7 @@ func (a *Analyse) Step_1a() string {
 }
 
 
-// Step 1B according the stemmer doc.
+/* Step 1B according the stemmer doc.*/
 func (a *Analyse) Step_1b() string {
   var str string
 
@@ -150,11 +181,93 @@ func (a *Analyse) Step_1b() string {
     }
   }
 
-  // If the second or third of the above rules is successful the following
-  // is done.
-  at := strings.HasSuffix(a.Word, "at")
-  if at == true || ing == true || ed == true && a.HasM1Endscvc() == true {
-    str = str + "e"
+  /* If the second or third of the above rules is successful the following
+  is done.*/
+
+  // Word has AT suffix. AT -> ATE
+  if ed == true || ing == true {
+    at := strings.HasSuffix(str, "at")
+    if at == true {
+      pre := strings.TrimSuffix(str, "at")
+      str = pre + "ate"
+    }
+  }
+
+  // Word has BL suffix. BL -> BLE
+  if ed == true || ing == true {
+    bl := strings.HasSuffix(str, "bl")
+    if bl == true {
+      pre := strings.TrimSuffix(str, "bl")
+      str = pre + "ble"
+    }
+  }
+
+  // Word has IZ suffix. IZ -> IZE
+  if ed == true || ing == true {
+    iz := strings.HasSuffix(str, "iz")
+    if iz == true {
+      pre := strings.TrimSuffix(str, "iz")
+      str = pre + "ize"
+    }
+  }
+
+  // (m=1 and *o) -> E
+  if ed == true || ing == true {
+    if HasMeasure1(str) == true && HasEndcvcNotwxy(str) == true {
+      str = str + "e"
+    }
+  }
+
+  // (*d and not (*L or *S or *Z)) -> single letter at the end
+  if ed == true || ing == true {
+    if HasDoubleConsonant(str) == true {
+      ll := strings.HasSuffix(str, "ll")
+      ss := strings.HasSuffix(str, "ss")
+      zz := strings.HasSuffix(str, "zz")
+      if ll == true || ss == true || zz == true {
+        str = str
+      }else {
+        strlen := len(str)
+        lastLetter := str[:(strlen-1)]
+        str = string(lastLetter)
+      }
+    }
+  }
+
+  return str
+}
+
+
+/* Step 1c according the stemmer doc.*/
+func (a *Analyse) Step_1c() string {
+  var str string
+
+  // Word has Vowel and Y suffix. Y -> I
+  y := strings.HasSuffix(a.Word, "y")
+  if a.HasVowel() == true && y == true {
+    pre := strings.TrimSuffix(a.Word, "y")
+    str = pre + "i"
+  }else {
+    str = a.Word
+  }
+
+  return str
+}
+
+
+/* Step 2 according the stemmer doc.
+=========================================*/
+func (a *Analyse) Step_2() string {
+  var str string
+
+  if a.HasMeaGreater0() == true {
+    // For ATIONAL suffix. ATIONAL -> ATE
+    ational := strings.HasSuffix(a.Word, "ational")
+    if ational == true {
+      pre := strings.TrimSuffix(a.Word, "ational")
+      str = pre + "ate"
+    }
+
   }
 
   return str
