@@ -4,18 +4,13 @@ the suffix stripping. M.F.Porter 1980
 Arach does not use a stem dictionary. It reads a documents and returns a slice
 of stems
 */
-package main
+package stemix
 
 import (
   "fmt"
   "strings"
 )
 
-
-func main() {
-  val := Form("caresses")
-  fmt.Println(val.step_1a())
-}
 
 type Analyse struct {
   Word string
@@ -53,7 +48,7 @@ func Form(w string) Analyse {
 }
 
 
-func (a *Analyse) step_1a() string {
+func (a *Analyse) Step_1a() string {
   var str string
 
   // For SSES suffix. SSES -> SS
@@ -68,6 +63,20 @@ func (a *Analyse) step_1a() string {
   if ies == true {
     pre := strings.TrimSuffix(a.Word, "ies")
     str = pre + "i"
+  }
+
+  // For SS suffix. SS -> SS
+  ss := strings.HasSuffix(a.Word, "ss")
+  if ss == true {
+    pre := strings.TrimSuffix(a.Word, "ss")
+    str = pre + "ss"
+  }
+
+  // For S suffix. S -> S
+  s := strings.HasSuffix(a.Word, "s")
+  if s == true && sses == false && ies == false && ss == false {
+    pre := strings.TrimSuffix(a.Word, "s")
+    str = pre
   }
 
   return str
