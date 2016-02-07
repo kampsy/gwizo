@@ -1,7 +1,7 @@
 /*
 stemix is the implementation of the porter stemmer algorithm in go. Specificaly
 the suffix stripping. M.F.Porter 1980
-stemix does not use a stem dictionary. It reads a documents and returns a slice
+stemix does not use any stem dictionary. It reads a documents and returns a slice
 of stems
 */
 package stemix
@@ -13,9 +13,9 @@ import (
 
 
 type Analyse struct {
-  Word string
-  VowCon string // example vcvcvc. Where v = vowel and c = consonant
-  Measure int // Number of times the pair vc appears
+  Word string // The word to be stemmed.
+  VowCon string // example vcvcvc. Where v = vowel and c = consonant.
+  Measure int // Number of times the pair vc appears.
 }
 
 
