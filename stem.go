@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-  val := stemix.Form("feed")
-  fmt.Println(val.Step_1b())
+  str := stemix.Stem("revival")
+  fmt.Println(str)
 }

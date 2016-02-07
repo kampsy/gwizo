@@ -709,3 +709,65 @@ func (a *Analyse) Step_5b() string {
 
   return str
 }
+
+
+func Stem(s string) string {
+  var str string = s
+
+  var slice []string
+
+  mytype := Form(s)
+  mystr := mytype.Step_1a()
+  if mystr != s {
+    slice = append(slice, mystr)
+  }
+
+  mytype2 := Form(s)
+  mystr2 := mytype2.Step_1b()
+  if mystr2 != s {
+    slice = append(slice, mystr2)
+  }
+
+  mytype3 := Form(s)
+  mystr3 := mytype3.Step_1c()
+  if mystr3 != s {
+    slice = append(slice, mystr3)
+  }
+
+  mytype4 := Form(s)
+  mystr4 := mytype4.Step_2()
+  if mystr4 != s {
+    slice = append(slice, mystr4)
+  }
+
+  mytype5 := Form(s)
+  mystr5 := mytype5.Step_3()
+  if mystr5 != s {
+    slice = append(slice, mystr5)
+  }
+
+  mytype6 := Form(s)
+  mystr6 := mytype6.Step_4()
+  if mystr6 != s {
+    slice = append(slice, mystr6)
+  }
+
+  mytype7 := Form(s)
+  mystr7 := mytype7.Step_5a()
+  if mystr7 != s {
+    slice = append(slice, mystr7)
+  }
+
+  mytype8 := Form(s)
+  mystr8 := mytype8.Step_5b()
+  if mystr8 != s {
+    slice = append(slice, mystr8)
+  }
+
+
+  if len(slice) > 0 {
+    str = slice[0]
+  }
+
+  return str
+}
