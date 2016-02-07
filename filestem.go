@@ -2,7 +2,7 @@ package main
 
 import (
   "fmt"
-  "github.com/kampsy/porter/stemix"
+  "github.com/kampsy/porter/gwizo"
   "bufio"
   "io/ioutil"
   "strings"
@@ -15,14 +15,14 @@ func main() {
 }
 
 func writeOut() {
-  re, err := ioutil.ReadFile("in.txt")
+  re, err := ioutil.ReadFile("words.txt")
   if err != nil {
     fmt.Println(err)
   }
 
   file := strings.NewReader(fmt.Sprintf("%s", re))
   scanner := bufio.NewScanner(file)
-  out, err := os.Create("out.txt")
+  out, err := os.Create("stemout.txt")
   if err != nil {
     fmt.Println(err)
   }

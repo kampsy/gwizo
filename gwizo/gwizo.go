@@ -1,10 +1,10 @@
 /*
-stemix is the implementation of the porter stemmer algorithm in go. Specificaly
+gwizo is the implementation of the porter stemmer algorithm in go. Specificaly
 the suffix stripping. M.F.Porter 1980
-stemix does not use any stem dictionary. It reads a documents and returns a slice
+gwizo does not use any stem dictionary. It reads a documents and returns a slice
 of stems
 */
-package stemix
+package gwizo
 
 import (
   "fmt"
@@ -290,7 +290,7 @@ func (a *Analyse) Step_1c() string {
 }
 
 
-/* Step 2 according the stemmer doc.
+/* Step 2 according to the stemmer doc.
 =========================================*/
 func (a *Analyse) Step_2() string {
   var str string = a.Word
