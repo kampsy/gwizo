@@ -12,15 +12,15 @@ import (
 )
 
 
-type Analyse struct {
+type Octopus struct {
   Word string // The word to be stemmed.
   VowCon string // example vcvcvc. Where v = vowel and c = consonant.
   Measure int // Number of times the pair vc appears.
 }
 
 
-// returns type Analyse
-func Form(w string) Analyse {
+// returns type Octopus
+func Ingest(w string) Octopus {
   var inx []string
   // Change the word to lowercase letters.
   wordLower := strings.ToLower(w)
@@ -37,7 +37,7 @@ func Form(w string) Analyse {
   }
 
   str := strings.Join(inx, "")
-  var anl Analyse // Instance of Analyse.
+  var anl Octopus // Instance of Octopus.
   anl.Word  = w
   anl.VowCon = str
   anl.Measure = strings.Count(str, "vc")
@@ -46,22 +46,22 @@ func Form(w string) Analyse {
 }
 
 // implementation of String Method and so Stringer interface
-func (a *Analyse) String() string {
+func (a *Octopus) String() string {
   return fmt.Sprintf("%s %s %s", a.Word, a.VowCon, a.Measure)
 }
 
 // Method HasVowel returns bool (*v*)
-func (a *Analyse) HasVowel() bool {
+func (a *Octopus) HasVowel() bool {
   return strings.Contains(a.VowCon, "v")
 }
 
 // Method HasConsonant returns bool (*c*)
-func (a *Analyse) HasConsonant() bool {
+func (a *Octopus) HasConsonant() bool {
   return strings.Contains(a.VowCon, "c")
 }
 
 // Measure value is grater than 0
-func (a *Analyse) HasMeaGreater0() bool {
+func (a *Octopus) HasMeaGreater0() bool {
   if a.Measure > 0 {
     return true
   }else {
@@ -70,7 +70,7 @@ func (a *Analyse) HasMeaGreater0() bool {
 }
 
 // Measure value is grater than 1
-func (a *Analyse) HasMeaGreater1() bool {
+func (a *Octopus) HasMeaGreater1() bool {
   if a.Measure > 1 {
     return true
   }else {
@@ -81,7 +81,7 @@ func (a *Analyse) HasMeaGreater1() bool {
 // Function checks if VowCon pattern ends with cvc, where second c is not
 // W, X, Y
 func HasEndcvcNotwxy(str string) bool {
-  nest := Form(str)
+  nest := Ingest(str)
   cvc := strings.HasSuffix(nest.VowCon, "cvc")
   wlen := len(nest.Word)
   lastLetter := nest.Word[(wlen - 1)]
@@ -99,7 +99,7 @@ func HasEndcvcNotwxy(str string) bool {
 
 // Measure value = 1
 func HasMeasure1(str string) bool {
-  nest := Form(str)
+  nest := Ingest(str)
   if nest.Measure == 1 {
     return true
   }else {
@@ -110,13 +110,13 @@ func HasMeasure1(str string) bool {
 // Function accepts a string as an argument, checks if it has double consonant
 // as suffix and returns a boolean
 func HasDoubleConsonant(str string) bool {
-  nest := Form(str)
+  nest := Ingest(str)
   cc := strings.HasSuffix(nest.VowCon, "cc")
   return cc
 }
 
 // Function checks if word has suffix S or T
-func (a *Analyse) HasEndst() bool {
+func (a *Octopus) HasEndst() bool {
   s := strings.HasSuffix(a.Word, "s")
   t := strings.HasSuffix(a.Word, "t")
 
@@ -128,7 +128,7 @@ func (a *Analyse) HasEndst() bool {
 }
 
 // Function checks if word has suffix L
-func (a *Analyse) HasEndl() bool {
+func (a *Octopus) HasEndl() bool {
   l := strings.HasSuffix(a.Word, "l")
   if l == true {
     return true
@@ -145,7 +145,7 @@ Step 1 deals with plurals and past participles. The subsequent steps are
 much more straightforward.
 Step 1A according the stemmer doc.
 ======================================*/
-func (a *Analyse) Step_1a() string {
+func (a *Octopus) Step_1a() string {
   var str string = a.Word
 
   // For SSES suffix. SSES -> SS
@@ -181,7 +181,7 @@ func (a *Analyse) Step_1a() string {
 
 
 /* Step 1B according the stemmer doc.*/
-func (a *Analyse) Step_1b() string {
+func (a *Octopus) Step_1b() string {
   var str string = a.Word
 
   // Word Measure (m > 0) and EED suffix. EED -> EE
@@ -275,7 +275,7 @@ func (a *Analyse) Step_1b() string {
 
 
 /* Step 1c according the stemmer doc.*/
-func (a *Analyse) Step_1c() string {
+func (a *Octopus) Step_1c() string {
   var str string = a.Word
 
   // (*v*) Y -> I
@@ -292,7 +292,7 @@ func (a *Analyse) Step_1c() string {
 
 /* Step 2 according to the stemmer doc.
 =========================================*/
-func (a *Analyse) Step_2() string {
+func (a *Octopus) Step_2() string {
   var str string = a.Word
 
   if a.HasMeaGreater0() == true {
@@ -454,7 +454,7 @@ func (a *Analyse) Step_2() string {
 
 /*Step 3 according the stemmer doc.
 =====================================*/
-func (a *Analyse) Step_3() string {
+func (a *Octopus) Step_3() string {
   var str string = a.Word
 
   if a.HasMeaGreater0() == true {
@@ -517,7 +517,7 @@ func (a *Analyse) Step_3() string {
 /*Step 4 according the stemmer doc.
 The suffixes will now be removed
 =====================================*/
-func (a *Analyse) Step_4() string {
+func (a *Octopus) Step_4() string {
   var str string = a.Word
 
   if a.HasMeaGreater1() == true {
@@ -665,7 +665,7 @@ func (a *Analyse) Step_4() string {
 /*Step 5 according the stemmer doc.
 little tidying up
 =====================================*/
-func (a *Analyse) Step_5a() string {
+func (a *Octopus) Step_5a() string {
   var str string = a.Word
 
   if a.HasMeaGreater1() == true {
@@ -695,7 +695,7 @@ func (a *Analyse) Step_5a() string {
 
 
 /*Step 5B according the stemmer doc.*/
-func (a *Analyse) Step_5b() string {
+func (a *Octopus) Step_5b() string {
   var str string = a.Word
 
   if a.HasMeaGreater1() == true {
@@ -713,56 +713,59 @@ func (a *Analyse) Step_5b() string {
 }
 
 
-func Stem(s string) string {
-  var str string = s
+/* Returns the stem of the word
+==============================*/
+func (a *Octopus) Stem() string {
+  var str string = a.Word
 
   var slice []string
 
-  mytype := Form(s)
+  var mytype *Octopus = a
+
   mystr := mytype.Step_1a()
-  if mystr != s {
+  if mystr != mytype.Word {
     slice = append(slice, mystr)
   }
 
-  mytype2 := Form(s)
+  var mytype2 *Octopus = a
   mystr2 := mytype2.Step_1b()
-  if mystr2 != s {
+  if mystr2 != mytype2.Word {
     slice = append(slice, mystr2)
   }
 
-  mytype3 := Form(s)
+  var mytype3 *Octopus = a
   mystr3 := mytype3.Step_1c()
-  if mystr3 != s {
+  if mystr3 != mytype3.Word {
     slice = append(slice, mystr3)
   }
 
-  mytype4 := Form(s)
+  var mytype4 *Octopus = a
   mystr4 := mytype4.Step_2()
-  if mystr4 != s {
+  if mystr4 != mytype4.Word {
     slice = append(slice, mystr4)
   }
 
-  mytype5 := Form(s)
+  var mytype5 *Octopus = a
   mystr5 := mytype5.Step_3()
-  if mystr5 != s {
+  if mystr5 != mytype5.Word {
     slice = append(slice, mystr5)
   }
 
-  mytype6 := Form(s)
+  var mytype6 *Octopus = a
   mystr6 := mytype6.Step_4()
-  if mystr6 != s {
+  if mystr6 != mytype6.Word {
     slice = append(slice, mystr6)
   }
 
-  mytype7 := Form(s)
+  var mytype7 *Octopus = a
   mystr7 := mytype7.Step_5a()
-  if mystr7 != s {
+  if mystr7 != mytype7.Word {
     slice = append(slice, mystr7)
   }
 
-  mytype8 := Form(s)
+  var mytype8 *Octopus = a
   mystr8 := mytype8.Step_5b()
-  if mystr8 != s {
+  if mystr8 != mytype8.Word {
     slice = append(slice, mystr8)
   }
 
@@ -772,4 +775,62 @@ func Stem(s string) string {
   }
 
   return str
+}
+
+
+/* Returns the Step that was used to stem the word
+=========================================*/
+func (a *Octopus) StemmedWith() string {
+  var stepUsed string = "None word is a stem"
+
+  var mytype *Octopus = a
+
+  mystr := mytype.Step_1a()
+  if mystr != mytype.Word {
+    stepUsed = "Step_1a"
+  }
+
+  var mytype2 *Octopus = a
+  mystr2 := mytype2.Step_1b()
+  if mystr2 != mytype2.Word {
+    stepUsed = "Step_1b"
+  }
+
+  var mytype3 *Octopus = a
+  mystr3 := mytype3.Step_1c()
+  if mystr3 != mytype3.Word {
+    stepUsed = "Step_1c"
+  }
+
+  var mytype4 *Octopus = a
+  mystr4 := mytype4.Step_2()
+  if mystr4 != mytype4.Word {
+    stepUsed = "Step_2"
+  }
+
+  var mytype5 *Octopus = a
+  mystr5 := mytype5.Step_3()
+  if mystr5 != mytype5.Word {
+    stepUsed = "Step_3"
+  }
+
+  var mytype6 *Octopus = a
+  mystr6 := mytype6.Step_4()
+  if mystr6 != mytype6.Word {
+    stepUsed = "Step_4"
+  }
+
+  var mytype7 *Octopus = a
+  mystr7 := mytype7.Step_5a()
+  if mystr7 != mytype7.Word {
+    stepUsed = "Step_5a"
+  }
+
+  var mytype8 *Octopus = a
+  mystr8 := mytype8.Step_5b()
+  if mystr8 != mytype8.Word {
+    stepUsed = "Step_5b"
+  }
+
+  return stepUsed
 }

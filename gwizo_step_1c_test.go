@@ -16,7 +16,7 @@ func TestStep_1c(t *testing.T) {
   }
 
   for i := 0; i < len(input); i++ {
-    analyse := gwizo.Form(input[i])
+    analyse := gwizo.Ingest(input[i])
     if analyse.Step_1c() != stem[i] {
       t.Error(fmt.Sprintf("Test For %s ~~Failed~~ [%s != %s]", input[i], analyse.Step_1c(), stem[i]))
     }else {
