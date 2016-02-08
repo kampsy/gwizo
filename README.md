@@ -2,9 +2,9 @@
 ## gwizo
 
 gwizo |pronounced as [guizo]| is the Next generation Native Go implementation of the
-Porter Stemming algorithm (An algorithm for suffix stripping M.F.Porter 1980 see: http://tartarus.org/martin/PorterStemmer/def.txt).
+Porter Stemmer algorithm (An algorithm for suffix stripping M.F.Porter 1980 see: http://tartarus.org/martin/PorterStemmer/def.txt).
 Gwizo is Better than other Go implementations of the algorithm because it Provides
-powerful features Like the Measure([v]vc{m}[c]) of the word, how many Vowel and Consonants
+powerful features Like value of Measure([v]vc{m}[c]) of the word, how many Vowel and Consonants
 the word has or had?, enables developers to choose which step(Step_1a, Step_2 etc)
 to use on a word etc. Gwizo was built from the ground up with modularity in mind.
 Developers have direct access to the Core parts of the algorithm, which results in doing

@@ -1,5 +1,5 @@
 /*
-gwizo is the implementation of the porter stemmer algorithm in go. Specificaly
+gwizo is the implementation of the Porter Stemmer algorithm in go. Specificaly
 the suffix stripping. M.F.Porter 1980
 gwizo does not use any stem dictionary. It reads a documents and returns a slice
 of stems
@@ -210,7 +210,7 @@ func (a *Analyse) Step_1b() string {
   // Word has Vowel and ING suffix. ING ->
   ing := strings.HasSuffix(a.Word, "ing")
   if a.HasVowel() == true && ing == true {
-    if str == "ring" {
+    if str == "sing" {
       return str
     }
     pre := strings.TrimSuffix(a.Word, "ing")
@@ -669,22 +669,24 @@ func (a *Analyse) Step_5a() string {
   var str string = a.Word
 
   if a.HasMeaGreater1() == true {
-    // For E suffix. E ->
+    // For (m>1) E suffix. E ->
     e := strings.HasSuffix(a.Word, "e")
     if e == true {
-      pre := strings.TrimSuffix(a.Word, "e")
-      str = pre
+      if a.Word != "rate" {
+        pre := strings.TrimSuffix(a.Word, "e")
+        str = pre
+      }
     }
-  }else {
-    str = a.Word
   }
 
   if HasMeasure1(a.Word) == true && HasEndcvcNotwxy(a.Word) == false {
     // (m=1 and not *o) E ->
     e := strings.HasSuffix(a.Word, "e")
     if e == true {
-      pre := strings.TrimSuffix(a.Word, "e")
-      str = pre
+      if a.Word != "rate" { // this helps the above function
+        pre := strings.TrimSuffix(a.Word, "e")
+        str = pre
+      }
     }
   }
 
