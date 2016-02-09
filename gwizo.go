@@ -176,6 +176,7 @@ func (a *Octopus) Step_1a() string {
   if sses == true {
     pre := strings.TrimSuffix(a.Word, "sses")
     str = pre + "ss"
+    return str
   }
 
   // For IES suffix. IES -> I
@@ -183,6 +184,7 @@ func (a *Octopus) Step_1a() string {
   if ies == true {
     pre := strings.TrimSuffix(a.Word, "ies")
     str = pre + "i"
+    return str
   }
 
   // For SS suffix. SS -> SS
@@ -190,13 +192,15 @@ func (a *Octopus) Step_1a() string {
   if ss == true {
     pre := strings.TrimSuffix(a.Word, "ss")
     str = pre + "ss"
+    return str
   }
 
   // For S suffix. S ->
   s := strings.HasSuffix(a.Word, "s")
-  if s == true && sses == false && ies == false && ss == false {
+  if s == true {
     pre := strings.TrimSuffix(a.Word, "s")
     str = pre
+    return str
   }
 
   return str
@@ -216,6 +220,7 @@ func (a *Octopus) Step_1b() string {
       pre := strings.TrimSuffix(a.Word, "eed")
       str = pre + "ee"
     }
+    return str
   }
 
   // Word has Vowel and ED suffix. ED ->
@@ -243,38 +248,31 @@ func (a *Octopus) Step_1b() string {
   /* If the second or third of the above rules is successful the following
   is done.*/
 
-  // Word has AT suffix. AT -> ATE
   if ed == true {
+    // Word has AT suffix. AT -> ATE
     at := strings.HasSuffix(str, "at")
     if at == true {
       pre := strings.TrimSuffix(str, "at")
       str = pre + "ate"
+      return str
     }
-  }
 
-  // Word has BL suffix. BL -> BLE
-  if ed == true {
+    // Word has BL suffix. BL -> BLE
     bl := strings.HasSuffix(str, "bl")
     if bl == true {
       pre := strings.TrimSuffix(str, "bl")
       str = pre + "ble"
+      return str
     }
-  }
 
-  // Word has IZ suffix. IZ -> IZE
-  if ed == true {
+    // Word has IZ suffix. IZ -> IZE
     iz := strings.HasSuffix(str, "iz")
     if iz == true {
       pre := strings.TrimSuffix(str, "iz")
       str = pre + "ize"
+      return str
     }
-  }
 
-  // (m=1 and *o) -> E
-  if ing == true {
-    if HasMeasure1(str) == true && HasEndcvcNotwxy(str) == true {
-      str = str + "e"
-    }
   }
 
   // (*d and not (*L or *S or *Z)) -> single letter at the end
@@ -290,6 +288,15 @@ func (a *Octopus) Step_1b() string {
         lastLetter := str[:(strlen-1)]
         str = string(lastLetter)
       }
+      return str
+    }
+  }
+
+  // (m=1 and *o) -> E
+  if ing == true {
+    if HasMeasure1(str) == true && HasEndcvcNotwxy(str) == true {
+      str = str + "e"
+      return str
     }
   }
 
@@ -324,19 +331,8 @@ func (a *Octopus) Step_2() string {
 
   if a.MeasureGreaterThan_0() == true {
 
-    // For TIONAL suffix. TIONAL -> TION
-    tional := strings.HasSuffix(a.Word, "tional") // Moved 1 step up
-    if tional == true {
-      if len(a.Word) == 8 {
-        str = a.Word
-      }else {
-        pre := strings.TrimSuffix(a.Word, "tional")
-        str = pre + "tion"
-      }
-    }
-
     // For ATIONAL suffix. ATIONAL -> ATE
-    ational := strings.HasSuffix(a.Word, "ational") // Moved 1 step down
+    ational := strings.HasSuffix(a.Word, "ational")
     if ational == true {
       if a.Word == "rational" {
         str = "rational"
@@ -344,6 +340,19 @@ func (a *Octopus) Step_2() string {
         pre := strings.TrimSuffix(a.Word, "ational")
         str = pre + "ate"
       }
+      return str
+    }
+
+    // For TIONAL suffix. TIONAL -> TION
+    tional := strings.HasSuffix(a.Word, "tional")
+    if tional == true {
+      if len(a.Word) == 8 {
+        str = a.Word
+      }else {
+        pre := strings.TrimSuffix(a.Word, "tional")
+        str = pre + "tion"
+      }
+      return str
     }
 
     // For ENCI suffix. ENCI -> ENCE
@@ -351,6 +360,7 @@ func (a *Octopus) Step_2() string {
     if enci == true {
       pre := strings.TrimSuffix(a.Word, "enci")
       str = pre + "ence"
+      return str
     }
 
     // For ANCI suffix. ANCI -> ANCE
@@ -358,6 +368,7 @@ func (a *Octopus) Step_2() string {
     if anci == true {
       pre := strings.TrimSuffix(a.Word, "anci")
       str = pre + "ance"
+      return str
     }
 
     // For IZER suffix. IZER -> IZE
@@ -365,6 +376,7 @@ func (a *Octopus) Step_2() string {
     if izer == true {
       pre := strings.TrimSuffix(a.Word, "izer")
       str = pre + "ize"
+      return str
     }
 
     // For ABLI suffix. ABLI -> ABLE
@@ -372,6 +384,7 @@ func (a *Octopus) Step_2() string {
     if abli == true {
       pre := strings.TrimSuffix(a.Word, "abli")
       str = pre + "able"
+      return str
     }
 
     // For ALLI suffix. ALLI -> AL
@@ -379,6 +392,7 @@ func (a *Octopus) Step_2() string {
     if alli == true {
       pre := strings.TrimSuffix(a.Word, "alli")
       str = pre + "al"
+      return str
     }
 
     // For ENTLI suffix. ENTLI -> ENT
@@ -386,6 +400,7 @@ func (a *Octopus) Step_2() string {
     if entli == true {
       pre := strings.TrimSuffix(a.Word, "entli")
       str = pre + "ent"
+      return str
     }
 
     // For ELI suffix. ELI -> E
@@ -393,6 +408,7 @@ func (a *Octopus) Step_2() string {
     if eli == true {
       pre := strings.TrimSuffix(a.Word, "eli")
       str = pre + "e"
+      return str
     }
 
     // For OUSLI suffix. OUSLI -> OUS
@@ -400,20 +416,23 @@ func (a *Octopus) Step_2() string {
     if ousli == true {
       pre := strings.TrimSuffix(a.Word, "ousli")
       str = pre + "ous"
-    }
-
-    // For ATION suffix. ATION -> ATE
-    ation := strings.HasSuffix(a.Word, "ation")// Moved 1 step bottom
-    if ation == true {
-      pre := strings.TrimSuffix(a.Word, "ation")
-      str = pre + "ate"
+      return str
     }
 
     // For IZATION suffix. IZATION -> IZE
-    ization := strings.HasSuffix(a.Word, "ization")// Moved 1 step down
+    ization := strings.HasSuffix(a.Word, "ization")
     if ization == true {
       pre := strings.TrimSuffix(a.Word, "ization")
       str = pre + "ize"
+      return str
+    }
+
+    // For ATION suffix. ATION -> ATE
+    ation := strings.HasSuffix(a.Word, "ation")
+    if ation == true {
+      pre := strings.TrimSuffix(a.Word, "ation")
+      str = pre + "ate"
+      return str
     }
 
 
@@ -422,6 +441,7 @@ func (a *Octopus) Step_2() string {
     if ator == true {
       pre := strings.TrimSuffix(a.Word, "ator")
       str = pre + "ate"
+      return str
     }
 
     // For ALISM suffix. ALISM -> AL
@@ -429,6 +449,7 @@ func (a *Octopus) Step_2() string {
     if alism == true {
       pre := strings.TrimSuffix(a.Word, "alism")
       str = pre + "al"
+      return str
     }
 
     // For IVENESS suffix. IVENESS -> IVE
@@ -436,6 +457,7 @@ func (a *Octopus) Step_2() string {
     if iveness == true {
       pre := strings.TrimSuffix(a.Word, "iveness")
       str = pre + "ive"
+      return str
     }
 
     // For FULNESS suffix. FULNESS -> FUL
@@ -443,6 +465,7 @@ func (a *Octopus) Step_2() string {
     if fulness == true {
       pre := strings.TrimSuffix(a.Word, "fulness")
       str = pre + "ful"
+      return str
     }
 
     // For OUSNESS suffix. OUSNESS -> OUS
@@ -450,6 +473,7 @@ func (a *Octopus) Step_2() string {
     if ousness == true {
       pre := strings.TrimSuffix(a.Word, "ousness")
       str = pre + "ous"
+      return str
     }
 
     // For ALITI suffix. ALITI -> AL
@@ -457,6 +481,7 @@ func (a *Octopus) Step_2() string {
     if aliti == true {
       pre := strings.TrimSuffix(a.Word, "aliti")
       str = pre + "al"
+      return str
     }
 
     // For IVITI suffix. IVITI -> IVE
@@ -464,6 +489,7 @@ func (a *Octopus) Step_2() string {
     if iviti == true {
       pre := strings.TrimSuffix(a.Word, "iviti")
       str = pre + "ive"
+      return str
     }
 
     // For BILITI suffix. BILITI -> BLE
@@ -471,6 +497,7 @@ func (a *Octopus) Step_2() string {
     if biliti == true {
       pre := strings.TrimSuffix(a.Word, "biliti")
       str = pre + "ble"
+      return str
     }
 
   }
@@ -490,6 +517,7 @@ func (a *Octopus) Step_3() string {
     if icate == true {
       pre := strings.TrimSuffix(a.Word, "icate")
       str = pre + "ic"
+      return str
     }
 
     // For ATIVE suffix. ATIVE ->
@@ -497,6 +525,7 @@ func (a *Octopus) Step_3() string {
     if ative == true {
       pre := strings.TrimSuffix(a.Word, "ative")
       str = pre
+      return str
     }
 
     // For ALIZE suffix. ALIZE -> AL
@@ -504,6 +533,7 @@ func (a *Octopus) Step_3() string {
     if alize == true {
       pre := strings.TrimSuffix(a.Word, "alize")
       str = pre + "al"
+      return str
     }
 
     // For ICITI suffix. ICITI -> IC
@@ -511,6 +541,7 @@ func (a *Octopus) Step_3() string {
     if iciti == true {
       pre := strings.TrimSuffix(a.Word, "iciti")
       str = pre + "ic"
+      return str
     }
 
     // For ICAL suffix. ICAL -> IC
@@ -518,6 +549,7 @@ func (a *Octopus) Step_3() string {
     if ical == true {
       pre := strings.TrimSuffix(a.Word, "ical")
       str = pre + "ic"
+      return str
     }
 
     // For FUL suffix. FUL ->
@@ -525,6 +557,7 @@ func (a *Octopus) Step_3() string {
     if ful == true {
       pre := strings.TrimSuffix(a.Word, "ful")
       str = pre
+      return str
     }
 
     // For NESS suffix. NESS ->
@@ -532,6 +565,7 @@ func (a *Octopus) Step_3() string {
     if ness == true {
       pre := strings.TrimSuffix(a.Word, "ness")
       str = pre
+      return str
     }
 
   }
@@ -553,6 +587,7 @@ func (a *Octopus) Step_4() string {
     if al == true {
       pre := strings.TrimSuffix(a.Word, "al")
       str = pre
+      return str
     }
 
     // For ANCE suffix. ANCE ->
@@ -560,6 +595,7 @@ func (a *Octopus) Step_4() string {
     if ance == true {
       pre := strings.TrimSuffix(a.Word, "ance")
       str = pre
+      return str
     }
 
     // For ENCE suffix. ENCE ->
@@ -567,6 +603,7 @@ func (a *Octopus) Step_4() string {
     if ence == true {
       pre := strings.TrimSuffix(a.Word, "ence")
       str = pre
+      return str
     }
 
     // For ER suffix. ER ->
@@ -574,6 +611,7 @@ func (a *Octopus) Step_4() string {
     if er == true {
       pre := strings.TrimSuffix(a.Word, "er")
       str = pre
+      return str
     }
 
     // For IC suffix. IC ->
@@ -581,6 +619,7 @@ func (a *Octopus) Step_4() string {
     if ic == true {
       pre := strings.TrimSuffix(a.Word, "ic")
       str = pre
+      return str
     }
 
     // For ABLE suffix. ABLE ->
@@ -588,6 +627,7 @@ func (a *Octopus) Step_4() string {
     if able == true {
       pre := strings.TrimSuffix(a.Word, "able")
       str = pre
+      return str
     }
 
     // For IBLE suffix. IBLE ->
@@ -595,6 +635,7 @@ func (a *Octopus) Step_4() string {
     if ible == true {
       pre := strings.TrimSuffix(a.Word, "ible")
       str = pre
+      return str
     }
 
     // For ANT suffix. ANT ->
@@ -602,29 +643,32 @@ func (a *Octopus) Step_4() string {
     if ant == true {
       pre := strings.TrimSuffix(a.Word, "ant")
       str = pre
-    }
-
-    // For ENT suffix. ENT ->
-    ent := strings.HasSuffix(a.Word, "ent") // moved position 2 paces
-    if ent == true {
-      pre := strings.TrimSuffix(a.Word, "ent")
-      str = pre
-    }
-
-    // For MENT suffix. MENT ->
-    ment := strings.HasSuffix(a.Word, "ment") // moved top 1 pace
-    if ment == true {
-      pre := strings.TrimSuffix(a.Word, "ment")
-      str = pre
+      return str
     }
 
     // For EMENT suffix. EMENT ->
-    ement := strings.HasSuffix(a.Word, "ement") // droped bottom 2 paces
+    ement := strings.HasSuffix(a.Word, "ement")
     if ement == true {
       pre := strings.TrimSuffix(a.Word, "ement")
       str = pre
+      return str
     }
 
+    // For MENT suffix. MENT ->
+    ment := strings.HasSuffix(a.Word, "ment")
+    if ment == true {
+      pre := strings.TrimSuffix(a.Word, "ment")
+      str = pre
+      return str
+    }
+
+    // For ENT suffix. ENT ->
+    ent := strings.HasSuffix(a.Word, "ent")
+    if ent == true {
+      pre := strings.TrimSuffix(a.Word, "ent")
+      str = pre
+      return str
+    }
 
     if a.HasEndst() == false { // Made Personal correction from true to false.
       // For ION suffix. ION ->
@@ -632,6 +676,7 @@ func (a *Octopus) Step_4() string {
       if ion == true {
         pre := strings.TrimSuffix(a.Word, "ion")
         str = pre
+        return str
       }
     }
 
@@ -640,6 +685,7 @@ func (a *Octopus) Step_4() string {
     if ou == true {
       pre := strings.TrimSuffix(a.Word, "ou")
       str = pre
+      return str
     }
 
     // For ISM suffix. ISM ->
@@ -647,6 +693,7 @@ func (a *Octopus) Step_4() string {
     if ism == true {
       pre := strings.TrimSuffix(a.Word, "ism")
       str = pre
+      return str
     }
 
     // For ATE suffix. ATE ->
@@ -654,6 +701,7 @@ func (a *Octopus) Step_4() string {
     if ate == true {
       pre := strings.TrimSuffix(a.Word, "ate")
       str = pre
+      return str
     }
 
     // For ITI suffix. ITI ->
@@ -661,6 +709,7 @@ func (a *Octopus) Step_4() string {
     if iti == true {
       pre := strings.TrimSuffix(a.Word, "iti")
       str = pre
+      return str
     }
 
     // For OUS suffix. OUS ->
@@ -668,6 +717,7 @@ func (a *Octopus) Step_4() string {
     if ous == true {
       pre := strings.TrimSuffix(a.Word, "ous")
       str = pre
+      return str
     }
 
     // For IVE suffix. IVE ->
@@ -675,6 +725,7 @@ func (a *Octopus) Step_4() string {
     if ive == true {
       pre := strings.TrimSuffix(a.Word, "ive")
       str = pre
+      return str
     }
 
     // For IZE suffix. IZE ->
@@ -682,6 +733,7 @@ func (a *Octopus) Step_4() string {
     if ize == true {
       pre := strings.TrimSuffix(a.Word, "ize")
       str = pre
+      return str
     }
 
   }
@@ -868,32 +920,34 @@ func (a *Octopus) ShallowStemmed() string {
 func (a *Octopus) DeepStem() string {
   var str string = a.Word
   if len(a.Word) > 2 {
-    var mytype *Octopus = a
+    var octopus *Octopus = a
 
-    mystr := mytype.Step_1a()
+    tentacle := octopus.Step_1a()
 
-    mytype.Word = mystr
-    mystr2 := mytype.Step_1b()
+    octopus.Word = tentacle
+    tentacle2 := octopus.Step_1b()
 
-    mytype.Word = mystr2
-    mystr3 := mytype.Step_1c()
+    octopus.Word = tentacle2
+    tentacle3 := octopus.Step_1c()
 
-    mytype.Word = mystr3
-    mystr4 := mytype.Step_2()
+    octopus.Word = tentacle3
+    tentacle4 := octopus.Step_2()
 
-    mytype.Word = mystr4
-    mystr5 := mytype.Step_3()
+    octopus.Word = tentacle4
+    tentacle5 := octopus.Step_3()
 
-    mytype.Word = mystr5
-    mystr6 := mytype.Step_4()
+    octopus.Word = tentacle5
+    if len(octopus.Word) > 4 {
+      tentacle6 := octopus.Step_4()
+      octopus.Word = tentacle6
+    }
 
-    mytype.Word = mystr6
-    mystr7 := mytype.Step_5a()
+    tentacle7 := octopus.Step_5a()
 
-    mytype.Word = mystr7
-    mystr8 := mytype.Step_5b()
+    octopus.Word = tentacle7
+    tentacle8 := octopus.Step_5b()
 
-    str  = mystr8
+    str = tentacle8
   }
 
   return str
