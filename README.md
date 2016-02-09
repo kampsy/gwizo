@@ -23,8 +23,8 @@ Installation
 
 [[[[[ Examples ]]]]]
 
-Stem And StemmedWith
-------------------------------
+DeepStem, ShallowStem, ShallowStemmed
+------------------------------------------------------
 This returns the stem of your string and the Step that was used.
 <pre>
   package main
@@ -36,13 +36,17 @@ This returns the stem of your string and the Step that was used.
 
   func main() {
     octopus := gwizo.Ingest("Consonants")
-    str := octopus.Stem() // Returns the stem
-    step := octopus.StemmedWith() // Returns the step used
-    fmt.Printf("Stem: %s\nStep  Used: %s\n", str, step)
+
+    deepstr := octopus.DeepStem() // Returns the stem from using every step
+    fmt.Printf("Stem: %s\n", deepstr)
+
+    shallowstr := octopus.ShallowStem() // Returns the stem from using one step
+    shallowstep := octopus.ShallowStemmed() // Returns the step used
+    fmt.Printf("ShallowStem: %s\nShallowStep  Used: %s\n", shallowstr, shallowstep)
   }
   Results
   ---------------------
-  Stem: consonant
+  ShallowStem: consonant
   Stemmed With: Step_1a
 </pre>
 

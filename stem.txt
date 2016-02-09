@@ -16519,7 +16519,7 @@ rash
 rat
 ratcatch
 ratcliff
-rat
+rate
 rate
 rateli
 rate
@@ -17269,7 +17269,7 @@ rim
 rin
 rinaldo
 rind
-ring
+r
 rin
 ringlead
 ringlet
@@ -18576,7 +18576,7 @@ sinew
 sinewi
 sin
 sinfulli
-s
+sing
 sing
 singe
 sing

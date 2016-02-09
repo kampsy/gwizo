@@ -19,26 +19,49 @@ type Octopus struct {
 }
 
 
-// returns type Octopus
+// Returns the Octopus type
 func Ingest(w string) Octopus {
-  var inx []string
+  // Collection of vowels and consonants
+  var collection []string
   // Change the word to lowercase letters.
   wordLower := strings.ToLower(w)
   for i := 0; i < len(wordLower); i++ {
+
+    // Check for y at the beginning.
+    if i == 0 {
+      if string(wordLower[i]) == "y" || string(wordLower[i]) == "a" || string(wordLower[i]) == "e" ||
+      string(wordLower[i]) == "i" || string(wordLower[i]) == "o" ||
+      string(wordLower[i]) == "u" {
+        collection = append(collection, "v")
+      }else {
+        collection = append(collection, "c")
+      }
+      continue
+    }
+
+    // If Y is preceded by a vowel Y becomes a consonant and if Y is preceded
+    // by a consonant Y becomes a vowel.
+    if collection[i-1] == "v" && string(wordLower[i]) == "y" {
+      collection = append(collection, "c")
+      continue
+    }else if collection[i-1] == "c" && string(wordLower[i]) == "y" {
+      collection = append(collection, "v")
+      continue
+    }
+
     if string(wordLower[i]) == "a" || string(wordLower[i]) == "e" ||
     string(wordLower[i]) == "i" || string(wordLower[i]) == "o" ||
     string(wordLower[i]) == "u" {
-      inx = append(inx, "v")
-    }else if string(wordLower[i]) != "a" || string(wordLower[i]) != "e" ||
-    string(wordLower[i]) != "i" || string(wordLower[i]) != "o" ||
-    string(wordLower[i]) != "u" {
-      inx = append(inx, "c")
+      collection = append(collection, "v")
+    }else {
+      collection = append(collection, "c")
     }
+
   }
 
-  str := strings.Join(inx, "")
+  str := strings.Join(collection, "")
   var anl Octopus // Instance of Octopus.
-  anl.Word  = w
+  anl.Word  = wordLower
   anl.VowCon = str
   anl.Measure = strings.Count(str, "vc")
 
@@ -61,7 +84,7 @@ func (a *Octopus) HasConsonant() bool {
 }
 
 // Measure value is grater than 0
-func (a *Octopus) HasMeaGreater0() bool {
+func (a *Octopus) MeasureGreaterThan_0() bool {
   if a.Measure > 0 {
     return true
   }else {
@@ -70,7 +93,7 @@ func (a *Octopus) HasMeaGreater0() bool {
 }
 
 // Measure value is grater than 1
-func (a *Octopus) HasMeaGreater1() bool {
+func (a *Octopus) MeasureGreaterThan_1() bool {
   if a.Measure > 1 {
     return true
   }else {
@@ -187,8 +210,8 @@ func (a *Octopus) Step_1b() string {
   // Word Measure (m > 0) and EED suffix. EED -> EE
   eed := strings.HasSuffix(a.Word, "eed")
   if eed == true && a.Measure > 0 {
-    if a.Word == "feed" {
-      str = "feed"
+    if len(a.Word) == 4 {
+      str = a.Word
     }else {
       pre := strings.TrimSuffix(a.Word, "eed")
       str = pre + "ee"
@@ -199,8 +222,8 @@ func (a *Octopus) Step_1b() string {
   ed := strings.HasSuffix(a.Word, "ed")
   if a.HasVowel() == true && ed == true && eed == false {
     // word exception
-    if a.Word == "bled" {
-      str = "bled"
+    if len(a.Word) == 4 {
+      str = a.Word
     }else {
       pre := strings.TrimSuffix(a.Word, "ed")
       str = pre
@@ -210,7 +233,7 @@ func (a *Octopus) Step_1b() string {
   // Word has Vowel and ING suffix. ING ->
   ing := strings.HasSuffix(a.Word, "ing")
   if a.HasVowel() == true && ing == true {
-    if str == "sing" {
+    if len(str) == 4 {
       return str
     }
     pre := strings.TrimSuffix(a.Word, "ing")
@@ -282,8 +305,12 @@ func (a *Octopus) Step_1c() string {
   // Word has Vowel and Y suffix. Y -> I
   y := strings.HasSuffix(a.Word, "y")
   if a.HasVowel() == true && y == true {
-    pre := strings.TrimSuffix(a.Word, "y")
-    str = pre + "i"
+    if len(a.Word) == 3 {
+      str = a.Word
+    }else {
+      pre := strings.TrimSuffix(a.Word, "y")
+      str = pre + "i"
+    }
   }
 
   return str
@@ -295,13 +322,13 @@ func (a *Octopus) Step_1c() string {
 func (a *Octopus) Step_2() string {
   var str string = a.Word
 
-  if a.HasMeaGreater0() == true {
+  if a.MeasureGreaterThan_0() == true {
 
     // For TIONAL suffix. TIONAL -> TION
     tional := strings.HasSuffix(a.Word, "tional") // Moved 1 step up
     if tional == true {
-      if a.Word == "rational" {
-        str = "rational"
+      if len(a.Word) == 8 {
+        str = a.Word
       }else {
         pre := strings.TrimSuffix(a.Word, "tional")
         str = pre + "tion"
@@ -457,7 +484,7 @@ func (a *Octopus) Step_2() string {
 func (a *Octopus) Step_3() string {
   var str string = a.Word
 
-  if a.HasMeaGreater0() == true {
+  if a.MeasureGreaterThan_0() == true {
     // For ICATE suffix. ICATE -> IC
     icate := strings.HasSuffix(a.Word, "icate")
     if icate == true {
@@ -520,7 +547,7 @@ The suffixes will now be removed
 func (a *Octopus) Step_4() string {
   var str string = a.Word
 
-  if a.HasMeaGreater1() == true {
+  if a.MeasureGreaterThan_1() == true {
     // For AL suffix. AL ->
     al := strings.HasSuffix(a.Word, "al")
     if al == true {
@@ -668,11 +695,11 @@ little tidying up
 func (a *Octopus) Step_5a() string {
   var str string = a.Word
 
-  if a.HasMeaGreater1() == true {
+  if a.MeasureGreaterThan_1() == true {
     // For (m>1) E suffix. E ->
     e := strings.HasSuffix(a.Word, "e")
     if e == true {
-      if a.Word != "rate" {
+      if len(a.Word) > 4 {
         pre := strings.TrimSuffix(a.Word, "e")
         str = pre
       }
@@ -683,7 +710,7 @@ func (a *Octopus) Step_5a() string {
     // (m=1 and not *o) E ->
     e := strings.HasSuffix(a.Word, "e")
     if e == true {
-      if a.Word != "rate" { // this helps the above function
+      if len(a.Word) > 4 { // this helps the above function
         pre := strings.TrimSuffix(a.Word, "e")
         str = pre
       }
@@ -698,7 +725,7 @@ func (a *Octopus) Step_5a() string {
 func (a *Octopus) Step_5b() string {
   var str string = a.Word
 
-  if a.HasMeaGreater1() == true {
+  if a.MeasureGreaterThan_1() == true {
     if HasDoubleConsonant(a.Word) == true && a.HasEndl() == true {
       w := a.Word
       strlen := len(w)
@@ -713,9 +740,9 @@ func (a *Octopus) Step_5b() string {
 }
 
 
-/* Returns the stem of the word
+/* Returns the stem of the word. This method bells out when the word is Changed
 ==============================*/
-func (a *Octopus) Stem() string {
+func (a *Octopus) ShallowStem() string {
   var str string = a.Word
 
   var slice []string
@@ -777,60 +804,97 @@ func (a *Octopus) Stem() string {
   return str
 }
 
-
 /* Returns the Step that was used to stem the word
 =========================================*/
-func (a *Octopus) StemmedWith() string {
+func (a *Octopus) ShallowStemmed() string {
   var stepUsed string = "None word is a stem"
 
   var mytype *Octopus = a
 
   mystr := mytype.Step_1a()
   if mystr != mytype.Word {
-    stepUsed = "Step_1a"
+    stepUsed = "Step_1a()"
   }
 
-  var mytype2 *Octopus = a
-  mystr2 := mytype2.Step_1b()
-  if mystr2 != mytype2.Word {
-    stepUsed = "Step_1b"
+  mytype.Word = mystr
+  mystr2 := mytype.Step_1b()
+  if mystr2 != mytype.Word {
+    stepUsed = "Step_1b()"
   }
 
-  var mytype3 *Octopus = a
-  mystr3 := mytype3.Step_1c()
-  if mystr3 != mytype3.Word {
-    stepUsed = "Step_1c"
+  mytype.Word = mystr2
+  mystr3 := mytype.Step_1c()
+  if mystr3 != mytype.Word {
+    stepUsed = "Step_1c()"
   }
 
-  var mytype4 *Octopus = a
-  mystr4 := mytype4.Step_2()
-  if mystr4 != mytype4.Word {
-    stepUsed = "Step_2"
+  mytype.Word = mystr3
+  mystr4 := mytype.Step_2()
+  if mystr4 != mytype.Word {
+    stepUsed = "Step_2()"
   }
 
-  var mytype5 *Octopus = a
-  mystr5 := mytype5.Step_3()
-  if mystr5 != mytype5.Word {
-    stepUsed = "Step_3"
+  mytype.Word = mystr4
+  mystr5 := mytype.Step_3()
+  if mystr5 != mytype.Word {
+    stepUsed = "Step_3()"
   }
 
-  var mytype6 *Octopus = a
-  mystr6 := mytype6.Step_4()
-  if mystr6 != mytype6.Word {
-    stepUsed = "Step_4"
+  mytype.Word = mystr5
+  mystr6 := mytype.Step_4()
+  if mystr6 != mytype.Word {
+    stepUsed = "Step_4()"
   }
 
-  var mytype7 *Octopus = a
-  mystr7 := mytype7.Step_5a()
-  if mystr7 != mytype7.Word {
-    stepUsed = "Step_5a"
+  mytype.Word = mystr6
+  mystr7 := mytype.Step_5a()
+  if mystr7 != mytype.Word {
+    stepUsed = "Step_5a()"
   }
 
-  var mytype8 *Octopus = a
-  mystr8 := mytype8.Step_5b()
-  if mystr8 != mytype8.Word {
-    stepUsed = "Step_5b"
+  mytype.Word = mystr7
+  mystr8 := mytype.Step_5b()
+  if mystr8 != mytype.Word {
+    stepUsed = "Step_5b()"
   }
 
   return stepUsed
+}
+
+
+/* Deep Stem makes sure that the word goes through every step in the algorithm.
+   Any change made by one step is passed on to the next step
+================================================================*/
+func (a *Octopus) DeepStem() string {
+  var str string = a.Word
+  if len(a.Word) > 2 {
+    var mytype *Octopus = a
+
+    mystr := mytype.Step_1a()
+
+    mytype.Word = mystr
+    mystr2 := mytype.Step_1b()
+
+    mytype.Word = mystr2
+    mystr3 := mytype.Step_1c()
+
+    mytype.Word = mystr3
+    mystr4 := mytype.Step_2()
+
+    mytype.Word = mystr4
+    mystr5 := mytype.Step_3()
+
+    mytype.Word = mystr5
+    mystr6 := mytype.Step_4()
+
+    mytype.Word = mystr6
+    mystr7 := mytype.Step_5a()
+
+    mytype.Word = mystr7
+    mystr8 := mytype.Step_5b()
+
+    str  = mystr8
+  }
+
+  return str
 }
