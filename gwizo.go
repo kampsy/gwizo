@@ -1,8 +1,7 @@
 /*
-gwizo is the implementation of the Porter Stemmer algorithm in go. Specificaly
-the suffix stripping. M.F.Porter 1980
-gwizo does not use any stem dictionary. It reads a documents and returns a slice
-of stems
+gwizo is Next generation Go implementation of the Porter Stemmer algorithm. Specificaly
+the suffix stripping. M.F.Porter 1980.
+It is designed to be extensible
 */
 package gwizo
 
@@ -103,7 +102,7 @@ func (a *Octopus) MeasureGreaterThan_1() bool {
 
 // Function checks if VowCon pattern ends with cvc, where second c is not
 // W, X, Y
-func HasEndcvcNotwxy(str string) bool {
+func HascvcEndLastNotwxy(str string) bool {
   nest := Ingest(str)
   cvc := strings.HasSuffix(nest.VowCon, "cvc")
   wlen := len(nest.Word)
@@ -121,7 +120,7 @@ func HasEndcvcNotwxy(str string) bool {
 }
 
 // Measure value = 1
-func HasMeasure1(str string) bool {
+func HasMeasureEqualTo_1(str string) bool {
   nest := Ingest(str)
   if nest.Measure == 1 {
     return true
@@ -294,7 +293,7 @@ func (a *Octopus) Step_1b() string {
 
   // (m=1 and *o) -> E
   if ing == true {
-    if HasMeasure1(str) == true && HasEndcvcNotwxy(str) == true {
+    if HasMeasureEqualTo_1(str) == true && HascvcEndLastNotwxy(str) == true {
       str = str + "e"
       return str
     }
@@ -758,7 +757,7 @@ func (a *Octopus) Step_5a() string {
     }
   }
 
-  if HasMeasure1(a.Word) == true && HasEndcvcNotwxy(a.Word) == false {
+  if HasMeasureEqualTo_1(a.Word) == true && HascvcEndLastNotwxy(a.Word) == false {
     // (m=1 and not *o) E ->
     e := strings.HasSuffix(a.Word, "e")
     if e == true {
@@ -866,48 +865,56 @@ func (a *Octopus) ShallowStemmed() string {
   mystr := mytype.Step_1a()
   if mystr != mytype.Word {
     stepUsed = "Step_1a()"
+    return stepUsed
   }
 
   mytype.Word = mystr
   mystr2 := mytype.Step_1b()
   if mystr2 != mytype.Word {
     stepUsed = "Step_1b()"
+    return stepUsed
   }
 
   mytype.Word = mystr2
   mystr3 := mytype.Step_1c()
   if mystr3 != mytype.Word {
     stepUsed = "Step_1c()"
+    return stepUsed
   }
 
   mytype.Word = mystr3
   mystr4 := mytype.Step_2()
   if mystr4 != mytype.Word {
     stepUsed = "Step_2()"
+    return stepUsed
   }
 
   mytype.Word = mystr4
   mystr5 := mytype.Step_3()
   if mystr5 != mytype.Word {
     stepUsed = "Step_3()"
+    return stepUsed
   }
 
   mytype.Word = mystr5
   mystr6 := mytype.Step_4()
   if mystr6 != mytype.Word {
     stepUsed = "Step_4()"
+    return stepUsed
   }
 
   mytype.Word = mystr6
   mystr7 := mytype.Step_5a()
   if mystr7 != mytype.Word {
     stepUsed = "Step_5a()"
+    return stepUsed
   }
 
   mytype.Word = mystr7
   mystr8 := mytype.Step_5b()
   if mystr8 != mytype.Word {
     stepUsed = "Step_5b()"
+    return stepUsed
   }
 
   return stepUsed

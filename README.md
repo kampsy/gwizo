@@ -3,17 +3,15 @@
 
 gwizo |pronounced as [guizo]| is the Next generation Native Go implementation of the
 Porter Stemmer algorithm (An algorithm for suffix stripping M.F.Porter 1980 see: http://tartarus.org/martin/PorterStemmer/def.txt).
-Gwizo is Better than other Go implementations of the algorithm because it Provides
-powerful features Like the value of Measure([v]vc{m}[c]) for a word, the number of Vowel
-and Consonants that a word has or had?, providing information about which Step was used during
-the stemming process and developer access to all steps(Step_1a, Step_2 etc) of the algorithm.
-Gwizo was built from the ground up with modularity in mind. Developers have direct access to all Core components of the algorithm, which results in doing lots of cool, powerful and amazing things (see examples below).
+The uniqueness of gwizo is not that it is open source. Its that it's well designed and   
+extensible. It is designed to be extensible, so that developers can create new experiences.(see examples below).
 
 Gwizo is built for people doing Machine Learning algorithms, specifically
 Natural language processing (NLP).
 
 Note: I made a few modification to gwizo for it to pass all tests. The original algorithm
-at http://tartarus.org/martin/PorterStemmer/def.txt) has a few issues.
+at http://tartarus.org/martin/PorterStemmer/def.txt) has a few issues(opinion!).
+The string that Ingest() takes is case insensitive
 
 Installation
 ------------
@@ -24,8 +22,8 @@ Installation
 [[[[[ Examples ]]]]]
 
 DeepStem, ShallowStem, ShallowStemmed
-------------------------------------------------------
-This returns the stem of your string and the Step that was used.
+====================================================
+DeepStem: The ingested word goes through every step in the algorithm.
 <pre>
   package main
 
@@ -35,24 +33,64 @@ This returns the stem of your string and the Step that was used.
   )
 
   func main() {
-    octopus := gwizo.Ingest("Consonants")
+    octopus := gwizo.Ingest("abilities")
 
-    deepstr := octopus.DeepStem() // Returns the stem from using every step
-    fmt.Printf("Stem: %s\n", deepstr)
-
-    shallowstr := octopus.ShallowStem() // Returns the stem from using one step
-    shallowstep := octopus.ShallowStemmed() // Returns the step used
-    fmt.Printf("ShallowStem: %s\nShallowStep  Used: %s\n", shallowstr, shallowstep)
+    str := octopus.DeepStem()
+    fmt.Printf("Stem: %s\n", str)
   }
   Results
   ---------------------
-  ShallowStem: consonant
-  Stemmed With: Step_1a
+  Steps used: Step_1a() then Step_2()
+  Stem: able
+</pre>
+
+ShallowStem: The word Goes through each step, from top to bottom like in DeepStem. The
+difference is that it bells out the moment a step Stems the ingested word.
+<pre>
+  package main
+
+  import (
+    "fmt"
+    "github.com/kampsy/gwizo"
+  )
+
+  func main() {
+    octopus := gwizo.Ingest("abilities")
+
+    str := octopus.DeepStem()
+    fmt.Printf("Stem: %s\n", str)
+  }
+  Results
+  ---------------------
+  Stem: abiliti
+</pre>
+
+ShallowStemmed: Works exactly like ShallowStem. The difference is that it returns
+the Step that was used instead of the stem.
+<pre>
+  package main
+
+  import (
+    "fmt"
+    "github.com/kampsy/gwizo"
+  )
+
+  func main() {
+    octopus := gwizo.Ingest("abilities")
+
+    str := octopus.DeepStem()
+    fmt.Printf("Stem: %s\n", str)
+  }
+  Results
+  ---------------------
+  Steps used: Step_1a()
 </pre>
 
 Vowels, Consonants and Measure
-------------------------------
-This returns the Vowels, Consonants and Measure of your word
+====================================================
+gwizo returns a type called Octopus with has the following fields The ingested
+string Word, VowCon which is the vowel consonut pattern and the Measure value
+[v]vc{m}[c]
 <pre>
   package main
 
@@ -63,7 +101,10 @@ This returns the Vowels, Consonants and Measure of your word
   )
 
   func main() {
-    octopus := gwizo.Ingest("gwizo")
+    octopus := gwizo.Ingest("abilities")
+
+    // VowCon
+    fmt.Printf("%s has Pattern %s \n", octopus.Word, octopus.VowCon)
 
     // Measure value [v]vc{m}[c]
     fmt.Printf("%s has Measure value %d \n", octopus.Word, octopus.Measure)
@@ -77,20 +118,21 @@ This returns the Vowels, Consonants and Measure of your word
     fmt.Printf("%s Has %d Consonants\n", octopus.Word, c)
 
     // Or just print all of the values
-    fmt.Println("values: ", octopus) // Type Analyse implements the Stringer interface.
+    fmt.Println("values: ", octopus)// Type Octopus implements the Stringer interface.
   }
   Results
   ---------------------
-  gwizo has Measure value 1
-  gwizo Has 2 Vowels
-  gwizo Has 3 Consonants
-  values:  {gwizo ccvcv 1}
+  abilities has Pattern vcvcvcvvc
+  abilities has Measure value 4
+  abilities Has 5 Vowels
+  abilities Has 4 Consonants
+  values:  {abilities vcvcvcvvc 4}
 </pre>
 
-Access Each Step Directly
-------------------------------
-This returns a stem that has been stemmed with a specific Step. Step_1a(),
-Step_1b(), Step_1c(), Step_2(), Step_3(), Step_4(), Step_5a(), Step_5b()
+Access Any Step Directly
+====================================================
+gwizo is so extensible that it allows you to use its core components.
+you can explicitly specify which Step to use on an ingested string.
 <pre>
 package main
 
@@ -121,3 +163,11 @@ package main
   vietnamize
   electric
 </pre>
+
+License
+==========
+BSD style - see license file.
+
+Developer
+===============
+kampamba chanda (a.k.a kampsy).
