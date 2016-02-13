@@ -131,10 +131,17 @@ func HasMeasureEqualTo_1(str string) bool {
 
 // Function accepts a string as an argument, checks if it has double consonant
 // as suffix and returns a boolean
-func HasDoubleConsonant(str string) bool {
+func HasSameDoubleConsonant(str string) bool {
   nest := Ingest(str)
   cc := strings.HasSuffix(nest.VowCon, "cc")
-  return cc
+  wlen := (len(str) - 1)
+  letr := string(str[wlen])
+  letr2 := string(str[(wlen - 1)])
+   if cc == true && letr == letr2 {
+     return true
+   }else {
+     return false
+   }
 }
 
 // Function checks if word has suffix S or T
@@ -276,7 +283,7 @@ func (a *Octopus) Step_1b() string {
 
   // (*d and not (*L or *S or *Z)) -> single letter at the end
   if ed == true || ing == true {
-    if HasDoubleConsonant(str) == true {
+    if HasSameDoubleConsonant(str) == true {
       ll := strings.HasSuffix(str, "ll")
       ss := strings.HasSuffix(str, "ss")
       zz := strings.HasSuffix(str, "zz")
@@ -777,7 +784,7 @@ func (a *Octopus) Step_5b() string {
   var str string = a.Word
 
   if a.MeasureGreaterThan_1() == true {
-    if HasDoubleConsonant(a.Word) == true && a.HasEndl() == true {
+    if HasSameDoubleConsonant(a.Word) == true && a.HasEndl() == true {
       w := a.Word
       strlen := len(w)
       lastLetter := w[:(strlen-1)]
