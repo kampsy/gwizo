@@ -1,4 +1,4 @@
-![gwizo](https://github.com/kampsy/gwizo/img/gwizo.png)
+![gwizo](https://github.com/kampsy/gwizo/blob/master/img/gwizo.png)
 ## gwizo
 
 gwizo |pronounced as [guizo]| is the Next generation Native Go implementation of the
