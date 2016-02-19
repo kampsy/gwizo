@@ -140,7 +140,7 @@ Access Any Step Directly
 gwizo is so extensible that it allows you to use its core components.
 you can explicitly specify which Step to use on an ingested string.
 <pre>
-package main
+  package main
 
   import (
     "fmt"
