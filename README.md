@@ -2,16 +2,21 @@
 ## gwizo
 
 gwizo |pronounced as [guizo]| is the Next generation Native Go implementation of the
-Porter Stemmer algorithm (An algorithm for suffix stripping M.F.Porter 1980 see: http://tartarus.org/martin/PorterStemmer/def.txt).
+Porter Stemmer algorithm (An algorithm for suffix stripping M.F.Porter 1980 see:
+(http://tartarus.org/martin/PorterStemmer/def.txt).
 The uniqueness of gwizo is not that it is open source. Its that it's well designed and   
-extensible. It is designed to be extensible, so that developers can create new experiences.(see examples below).
+extensible. It is designed to be extensible, so that developers can easily create
+new experiences.(see examples below).
 
-Gwizo is built for people doing Machine Learning algorithms, specifically
-Natural language processing (NLP).
+Gwizo is built for people doing:
+1) Machine Learning algorithms, specifically Natural language processing (NLP).
+2) An Inverted index for an Information Retrieval System or Search Engine.
+
 
 Note: I made a few modification to gwizo for it to pass all tests. The original algorithm
 at http://tartarus.org/martin/PorterStemmer/def.txt) has a few issues(opinion!).
-The string that Ingest() takes is case insensitive
+
+The string that the Ingest() function takes is case insensitive
 
 Installation
 ------------
@@ -57,11 +62,12 @@ difference is that it bells out the moment a step Stems the ingested word.
   func main() {
     octopus := gwizo.Ingest("abilities")
 
-    str := octopus.DeepStem()
+    str := octopus.ShallowStem()
     fmt.Printf("Stem: %s\n", str)
   }
   Results
   ---------------------
+  Steps used: Step_1a()
   Stem: abiliti
 </pre>
 
@@ -78,7 +84,7 @@ the Step that was used instead of the stem.
   func main() {
     octopus := gwizo.Ingest("abilities")
 
-    str := octopus.DeepStem()
+    str := octopus.ShallowStemmed()
     fmt.Printf("Stem: %s\n", str)
   }
   Results
@@ -88,7 +94,7 @@ the Step that was used instead of the stem.
 
 Vowels, Consonants and Measure
 ====================================================
-gwizo returns a type called Octopus with has the following fields The ingested
+gwizo returns a type called Octopus which has the following fields; The ingested
 string Word, VowCon which is the vowel consonut pattern and the Measure value
 [v]vc{m}[c]
 <pre>
@@ -171,3 +177,4 @@ BSD style - see license file.
 Developer
 ===============
 kampamba chanda (a.k.a kampsy).
+email: kampsycode@gmail.com

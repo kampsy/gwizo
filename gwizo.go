@@ -1,7 +1,7 @@
 /*
 gwizo is Next generation Go implementation of the Porter Stemmer algorithm. Specificaly
 the suffix stripping. M.F.Porter 1980.
-It is designed to be extensible
+It is designed to be extensible so that developers can easily create new experiences
 */
 package gwizo
 
