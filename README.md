@@ -1,5 +1,11 @@
-![gwizo](https://github.com/kampsy/gwizo/blob/master/img/gwizo.png)
-## gwizo
+gwizo 
+======
+<code>The stemmer with a magic touch </code>
+<br>
+<img src="https://github.com/kampsy/gwizo/blob/master/img/gwizo.png" height="200px" width="200px">
+<br>
+<code>image made by Renee French under Creative Commons 3.0 Attributions. Modified and improved by Olga Shalakhina osshalakhina@gmail.com</code>
+<hr>
 
 gwizo |pronounced as [guizo]| is the Next generation Native Go implementation of the
 Porter Stemmer algorithm (An algorithm for suffix stripping M.F.Porter 1980 see:
