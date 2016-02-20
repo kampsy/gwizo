@@ -1,6 +1,7 @@
 gwizo 
 ======
 <code>The stemmer with a magic touch </code>
+<a href="https://youtu.be/At0orCwqHwM">Play Screencast</a>
 <br>
 <img src="https://github.com/kampsy/gwizo/blob/master/img/gwizo.png" height="200px" width="200px">
 <br>
