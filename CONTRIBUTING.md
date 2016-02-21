@@ -5,7 +5,7 @@ Gwizo is an open source project.
 ## Contributing code
 Please make sure you clearly explain why your patches or feature should be pulled.
 
-**We accept GitHub pull requests**.
+**I accept GitHub pull requests**.
 All Contributions are accept through the GitHub pull requests.
 
 

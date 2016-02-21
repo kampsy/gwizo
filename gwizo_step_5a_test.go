@@ -16,11 +16,11 @@ func TestStep_5a(t *testing.T) {
   }
 
   for i := 0; i < len(input); i++ {
-    analyse := gwizo.Ingest(input[i])
-    if analyse.Step_5a() != stem[i] {
-      t.Error(fmt.Sprintf("Test For %s ~~Failed~~ [%s != %s]", input[i], analyse.Step_5a(), stem[i]))
+    octopus := gwizo.Ingest(input[i])
+    if octopus.Step_5a() != stem[i] {
+      t.Error(fmt.Sprintf("Test For %s ~~Failed~~ [%s != %s]", input[i], octopus.Step_5a(), stem[i]))
     }else {
-      t.Log(fmt.Sprintf("Test For %s **Passed** [%s == %s]", input[i], analyse.Step_5a(), stem[i]))
+      t.Log(fmt.Sprintf("Test For %s **Passed** [%s == %s]", input[i], octopus.Step_5a(), stem[i]))
     }
   }
 }
