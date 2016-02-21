@@ -134,14 +134,17 @@ func HasMeasureEqualTo_1(str string) bool {
 func HasSameDoubleConsonant(str string) bool {
   nest := Ingest(str)
   cc := strings.HasSuffix(nest.VowCon, "cc")
-  wlen := (len(str) - 1)
-  letr := string(str[wlen])
-  letr2 := string(str[(wlen - 1)])
-   if cc == true && letr == letr2 {
-     return true
+   if cc == true {
+     wlen := (len(str) - 1)
+     letr := string(str[wlen])
+     letr2 := string(str[(wlen - 1)])
+     if letr == letr2 {
+       return true
+     }
    }else {
      return false
    }
+   return false
 }
 
 // Function checks if word has suffix S or T
@@ -802,61 +805,64 @@ func (a *Octopus) Step_5b() string {
 ==============================*/
 func (a *Octopus) ShallowStem() string {
   var str string = a.Word
+  if len(a.Word) > 4 {
+    var slice []string
 
-  var slice []string
+    var mytype *Octopus = a
 
-  var mytype *Octopus = a
+    mystr := mytype.Step_1a()
+    if mystr != mytype.Word {
+      slice = append(slice, mystr)
+    }
 
-  mystr := mytype.Step_1a()
-  if mystr != mytype.Word {
-    slice = append(slice, mystr)
-  }
+    var mytype2 *Octopus = a
+    mystr2 := mytype2.Step_1b()
+    if mystr2 != mytype2.Word {
+      slice = append(slice, mystr2)
+    }
 
-  var mytype2 *Octopus = a
-  mystr2 := mytype2.Step_1b()
-  if mystr2 != mytype2.Word {
-    slice = append(slice, mystr2)
-  }
+    var mytype3 *Octopus = a
+    mystr3 := mytype3.Step_1c()
+    if mystr3 != mytype3.Word {
+      slice = append(slice, mystr3)
+    }
 
-  var mytype3 *Octopus = a
-  mystr3 := mytype3.Step_1c()
-  if mystr3 != mytype3.Word {
-    slice = append(slice, mystr3)
-  }
+    var mytype4 *Octopus = a
+    mystr4 := mytype4.Step_2()
+    if mystr4 != mytype4.Word {
+      slice = append(slice, mystr4)
+    }
 
-  var mytype4 *Octopus = a
-  mystr4 := mytype4.Step_2()
-  if mystr4 != mytype4.Word {
-    slice = append(slice, mystr4)
-  }
+    var mytype5 *Octopus = a
+    mystr5 := mytype5.Step_3()
+    if mystr5 != mytype5.Word {
+      slice = append(slice, mystr5)
+    }
 
-  var mytype5 *Octopus = a
-  mystr5 := mytype5.Step_3()
-  if mystr5 != mytype5.Word {
-    slice = append(slice, mystr5)
-  }
+    var mytype6 *Octopus = a
+    mystr6 := mytype6.Step_4()
+    if mystr6 != mytype6.Word {
+      slice = append(slice, mystr6)
+    }
 
-  var mytype6 *Octopus = a
-  mystr6 := mytype6.Step_4()
-  if mystr6 != mytype6.Word {
-    slice = append(slice, mystr6)
-  }
+    var mytype7 *Octopus = a
+    mystr7 := mytype7.Step_5a()
+    if mystr7 != mytype7.Word {
+      slice = append(slice, mystr7)
+    }
 
-  var mytype7 *Octopus = a
-  mystr7 := mytype7.Step_5a()
-  if mystr7 != mytype7.Word {
-    slice = append(slice, mystr7)
-  }
-
-  var mytype8 *Octopus = a
-  mystr8 := mytype8.Step_5b()
-  if mystr8 != mytype8.Word {
-    slice = append(slice, mystr8)
-  }
+    var mytype8 *Octopus = a
+    mystr8 := mytype8.Step_5b()
+    if mystr8 != mytype8.Word {
+      slice = append(slice, mystr8)
+    }
 
 
-  if len(slice) > 0 {
-    str = slice[0]
+    if len(slice) > 0 {
+      str = slice[0]
+    }
+
+    return str
   }
 
   return str
@@ -865,63 +871,64 @@ func (a *Octopus) ShallowStem() string {
 /* Returns the Step that was used to stem the word
 =========================================*/
 func (a *Octopus) ShallowStemmed() string {
-  var stepUsed string = "None word is a stem"
+  var stepUsed string = fmt.Sprintf("None %s is a stem", a.Word)
+  if len(a.Word) > 4 {
+    var mytype *Octopus = a
 
-  var mytype *Octopus = a
+    mystr := mytype.Step_1a()
+    if mystr != mytype.Word {
+      stepUsed = "Step_1a()"
+      return stepUsed
+    }
 
-  mystr := mytype.Step_1a()
-  if mystr != mytype.Word {
-    stepUsed = "Step_1a()"
-    return stepUsed
-  }
+    mytype.Word = mystr
+    mystr2 := mytype.Step_1b()
+    if mystr2 != mytype.Word {
+      stepUsed = "Step_1b()"
+      return stepUsed
+    }
 
-  mytype.Word = mystr
-  mystr2 := mytype.Step_1b()
-  if mystr2 != mytype.Word {
-    stepUsed = "Step_1b()"
-    return stepUsed
-  }
+    mytype.Word = mystr2
+    mystr3 := mytype.Step_1c()
+    if mystr3 != mytype.Word {
+      stepUsed = "Step_1c()"
+      return stepUsed
+    }
 
-  mytype.Word = mystr2
-  mystr3 := mytype.Step_1c()
-  if mystr3 != mytype.Word {
-    stepUsed = "Step_1c()"
-    return stepUsed
-  }
+    mytype.Word = mystr3
+    mystr4 := mytype.Step_2()
+    if mystr4 != mytype.Word {
+      stepUsed = "Step_2()"
+      return stepUsed
+    }
 
-  mytype.Word = mystr3
-  mystr4 := mytype.Step_2()
-  if mystr4 != mytype.Word {
-    stepUsed = "Step_2()"
-    return stepUsed
-  }
+    mytype.Word = mystr4
+    mystr5 := mytype.Step_3()
+    if mystr5 != mytype.Word {
+      stepUsed = "Step_3()"
+      return stepUsed
+    }
 
-  mytype.Word = mystr4
-  mystr5 := mytype.Step_3()
-  if mystr5 != mytype.Word {
-    stepUsed = "Step_3()"
-    return stepUsed
-  }
+    mytype.Word = mystr5
+    mystr6 := mytype.Step_4()
+    if mystr6 != mytype.Word {
+      stepUsed = "Step_4()"
+      return stepUsed
+    }
 
-  mytype.Word = mystr5
-  mystr6 := mytype.Step_4()
-  if mystr6 != mytype.Word {
-    stepUsed = "Step_4()"
-    return stepUsed
-  }
+    mytype.Word = mystr6
+    mystr7 := mytype.Step_5a()
+    if mystr7 != mytype.Word {
+      stepUsed = "Step_5a()"
+      return stepUsed
+    }
 
-  mytype.Word = mystr6
-  mystr7 := mytype.Step_5a()
-  if mystr7 != mytype.Word {
-    stepUsed = "Step_5a()"
-    return stepUsed
-  }
-
-  mytype.Word = mystr7
-  mystr8 := mytype.Step_5b()
-  if mystr8 != mytype.Word {
-    stepUsed = "Step_5b()"
-    return stepUsed
+    mytype.Word = mystr7
+    mystr8 := mytype.Step_5b()
+    if mystr8 != mytype.Word {
+      stepUsed = "Step_5b()"
+      return stepUsed
+    }
   }
 
   return stepUsed
@@ -933,7 +940,7 @@ func (a *Octopus) ShallowStemmed() string {
 ================================================================*/
 func (a *Octopus) DeepStem() string {
   var str string = a.Word
-  if len(a.Word) > 2 {
+  if len(a.Word) > 4 {
     var octopus *Octopus = a
 
     tentacle := octopus.Step_1a()
@@ -962,6 +969,7 @@ func (a *Octopus) DeepStem() string {
     tentacle8 := octopus.Step_5b()
 
     str = tentacle8
+    return str
   }
 
   return str
