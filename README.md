@@ -179,7 +179,7 @@ you can explicitly specify which Step to use on an ingested string.
 
 File Stem Performance.
 ====================================================
-gwizo stemmed a file input.txt containing 23531 in 1.814791104s
+gwizo stemmed a file input.txt containing 23531 words in 1.814791104s
 on my computer
 <pre>
   package main
