@@ -1,6 +1,7 @@
-gwizo 
+gwizo
 ======
 <code>The stemmer with a magic touch </code>
+<a href="https://youtu.be/At0orCwqHwM">Play Screencast</a>
 <br>
 <img src="https://github.com/kampsy/gwizo/blob/master/img/gwizo.png" height="200px" width="200px">
 <br>
@@ -174,6 +175,61 @@ you can explicitly specify which Step to use on an ingested string.
   trouble
   vietnamize
   electric
+</pre>
+
+File Stem Performance.
+====================================================
+gwizo stemmed a file input.txt containing 23531 in 1.814791104s
+on my computer
+<pre>
+  package main
+
+  import (
+    "fmt"
+    "github.com/kampsy/gwizo"
+    "bufio"
+    "io/ioutil"
+    "strings"
+    "os"
+    "time"
+  )
+
+  func main() {
+    curr := time.Now()
+    writeOut()
+    elaps := time.Since(curr)
+    fmt.Println("============================")
+    fmt.Println("Done After:", elaps)
+    fmt.Println("============================")
+  }
+
+  func writeOut() {
+    re, err := ioutil.ReadFile("input.txt")
+    if err != nil {
+      fmt.Println(err)
+    }
+
+    file := strings.NewReader(fmt.Sprintf("%s", re))
+    scanner := bufio.NewScanner(file)
+    out, err := os.Create("stem.txt")
+    if err != nil {
+      fmt.Println(err)
+    }
+    defer out.Close()
+    for scanner.Scan() {
+      txt := scanner.Text()
+      octopus := gwizo.Ingest(txt)
+      str := octopus.DeepStem()
+      out.WriteString(fmt.Sprintf("%s\n", str))
+      fmt.Println(txt, "--->", str)
+    }
+    if err := scanner.Err(); err != nil {
+      fmt.Println(err)
+    }
+  }
+  Results
+  ---------------------
+  Done After: 1.814791104s
 </pre>
 
 License

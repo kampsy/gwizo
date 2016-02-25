@@ -170,8 +170,6 @@ func (a *Octopus) HasEndl() bool {
 }
 
 
-
-
 /*
 Step 1 deals with plurals and past participles. The subsequent steps are
 much more straightforward.
@@ -234,7 +232,7 @@ func (a *Octopus) Step_1b() string {
 
   // Word has Vowel and ED suffix. ED ->
   ed := strings.HasSuffix(a.Word, "ed")
-  if a.HasVowel() == true && ed == true && eed == false {
+  if a.HasVowel() == true && ed == true {
     // word exception
     if len(a.Word) == 4 {
       str = a.Word
