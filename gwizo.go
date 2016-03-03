@@ -67,6 +67,52 @@ func Ingest(w string) Octopus {
   return anl
 }
 
+// this method remakes the VowCon and measure of the word before each step.
+func(o *Octopus) thinian(w string) {
+  // Collection of vowels and consonants
+  var collection []string
+  // Change the word to lowercase letters.
+  wordLower := strings.ToLower(w)
+  for i := 0; i < len(wordLower); i++ {
+
+    // Check for y at the beginning.
+    if i == 0 {
+      if string(wordLower[i]) == "y" || string(wordLower[i]) == "a" || string(wordLower[i]) == "e" ||
+      string(wordLower[i]) == "i" || string(wordLower[i]) == "o" ||
+      string(wordLower[i]) == "u" {
+        collection = append(collection, "v")
+      }else {
+        collection = append(collection, "c")
+      }
+      continue
+    }
+
+    // If Y is preceded by a vowel Y becomes a consonant and if Y is preceded
+    // by a consonant Y becomes a vowel.
+    if collection[i-1] == "v" && string(wordLower[i]) == "y" {
+      collection = append(collection, "c")
+      continue
+    }else if collection[i-1] == "c" && string(wordLower[i]) == "y" {
+      collection = append(collection, "v")
+      continue
+    }
+
+    if string(wordLower[i]) == "a" || string(wordLower[i]) == "e" ||
+    string(wordLower[i]) == "i" || string(wordLower[i]) == "o" ||
+    string(wordLower[i]) == "u" {
+      collection = append(collection, "v")
+    }else {
+      collection = append(collection, "c")
+    }
+
+  }
+
+  str := strings.Join(collection, "")
+  o.Word  = wordLower
+  o.VowCon = str
+  o.Measure = strings.Count(str, "vc")
+}
+
 // implementation of String Method and so Stringer interface
 func (a *Octopus) String() string {
   return fmt.Sprintf("%s %s %s", a.Word, a.VowCon, a.Measure)
@@ -177,6 +223,7 @@ Step 1A according the stemmer doc.
 ======================================*/
 func (a *Octopus) Step_1a() string {
   var str string = a.Word
+  a.thinian(str) // remake for the word
 
   // For SSES suffix. SSES -> SS
   sses := strings.HasSuffix(a.Word, "sses")
@@ -217,6 +264,7 @@ func (a *Octopus) Step_1a() string {
 /* Step 1B according the stemmer doc.*/
 func (a *Octopus) Step_1b() string {
   var str string = a.Word
+  a.thinian(str) // remake for the word
 
   // Word Measure (m > 0) and EED suffix. EED -> EE
   eed := strings.HasSuffix(a.Word, "eed")
@@ -314,12 +362,13 @@ func (a *Octopus) Step_1b() string {
 /* Step 1c according the stemmer doc.*/
 func (a *Octopus) Step_1c() string {
   var str string = a.Word
+  a.thinian(str) // remake for the word
 
   // (*v*) Y -> I
   // Word has Vowel and Y suffix. Y -> I
   y := strings.HasSuffix(a.Word, "y")
   if a.HasVowel() == true && y == true {
-    if len(a.Word) == 3 {
+    if len(a.Word) <= 3 {
       str = a.Word
     }else {
       pre := strings.TrimSuffix(a.Word, "y")
@@ -335,6 +384,7 @@ func (a *Octopus) Step_1c() string {
 =========================================*/
 func (a *Octopus) Step_2() string {
   var str string = a.Word
+  a.thinian(str) // remake for the word
 
   if a.MeasureGreaterThan_0() == true {
 
@@ -353,8 +403,8 @@ func (a *Octopus) Step_2() string {
     // For TIONAL suffix. TIONAL -> TION
     tional := strings.HasSuffix(a.Word, "tional")
     if tional == true {
-      if len(a.Word) == 8 {
-        str = a.Word
+      if a.Word == "rational" {
+        str = "rational"
       }else {
         pre := strings.TrimSuffix(a.Word, "tional")
         str = pre + "tion"
@@ -517,6 +567,7 @@ func (a *Octopus) Step_2() string {
 =====================================*/
 func (a *Octopus) Step_3() string {
   var str string = a.Word
+  a.thinian(str) // remake for the word
 
   if a.MeasureGreaterThan_0() == true {
     // For ICATE suffix. ICATE -> IC
@@ -587,6 +638,7 @@ The suffixes will now be removed
 =====================================*/
 func (a *Octopus) Step_4() string {
   var str string = a.Word
+  a.thinian(str) // remake for the word
 
   if a.MeasureGreaterThan_1() == true {
     // For AL suffix. AL ->
@@ -753,14 +805,16 @@ little tidying up
 =====================================*/
 func (a *Octopus) Step_5a() string {
   var str string = a.Word
+  a.thinian(str) // remake for the word
 
   if a.MeasureGreaterThan_1() == true {
-    // For (m>1) E suffix. E ->
+    // E suffix. E ->
     e := strings.HasSuffix(a.Word, "e")
     if e == true {
       if len(a.Word) > 4 {
         pre := strings.TrimSuffix(a.Word, "e")
         str = pre
+        return str
       }
     }
   }
@@ -772,6 +826,7 @@ func (a *Octopus) Step_5a() string {
       if len(a.Word) > 4 { // this helps the above function
         pre := strings.TrimSuffix(a.Word, "e")
         str = pre
+        return str
       }
     }
   }
@@ -783,12 +838,13 @@ func (a *Octopus) Step_5a() string {
 /*Step 5B according the stemmer doc.*/
 func (a *Octopus) Step_5b() string {
   var str string = a.Word
+  a.thinian(str) // remake for the word
 
   if a.MeasureGreaterThan_1() == true {
     if HasSameDoubleConsonant(a.Word) == true && a.HasEndl() == true {
       w := a.Word
       strlen := len(w)
-      lastLetter := w[:(strlen-1)]
+      lastLetter := w[:(strlen - 1)]
       str = string(lastLetter)
     }
   }else {
@@ -799,7 +855,7 @@ func (a *Octopus) Step_5b() string {
 }
 
 
-/* Returns the stem of the word. This method bells out when the word is Changed
+/* ShallowStem Returns the stem of the word. This method bells out when the word is Changed
 ==============================*/
 func (a *Octopus) ShallowStem() string {
   var str string = a.Word
@@ -866,7 +922,7 @@ func (a *Octopus) ShallowStem() string {
   return str
 }
 
-/* Returns the Step that was used to stem the word
+/* ShallowStemmed Returns the Step that was used to stem the word
 =========================================*/
 func (a *Octopus) ShallowStemmed() string {
   var stepUsed string = fmt.Sprintf("None %s is a stem", a.Word)
@@ -956,11 +1012,9 @@ func (a *Octopus) DeepStem() string {
     tentacle5 := octopus.Step_3()
 
     octopus.Word = tentacle5
-    if len(octopus.Word) > 4 {
-      tentacle6 := octopus.Step_4()
-      octopus.Word = tentacle6
-    }
-
+    tentacle6 := octopus.Step_4()
+    
+    octopus.Word = tentacle6
     tentacle7 := octopus.Step_5a()
 
     octopus.Word = tentacle7

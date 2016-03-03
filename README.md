@@ -15,9 +15,9 @@ The uniqueness of gwizo is not that it is open source. Its that it's well design
 extensible. It is designed to be extensible, so that developers can easily create
 new experiences.(see examples below).
 
-Gwizo is built for people doing:
+Gwizo is an awesome tool for projects involving:
 1) Machine Learning algorithms, specifically Natural language processing (NLP).
-2) An Inverted index for an Information Retrieval System or Search Engine.
+2) Inverted indices for Information Retrieval Systems eg Search Engines.
 
 
 Note: I made a few modification to gwizo for it to pass all tests. The original algorithm
@@ -239,4 +239,6 @@ BSD style - see license file.
 Developer
 ===============
 kampamba chanda (a.k.a kampsy).
+twitter @kampsy
+google+ google.com/+kampambachanda
 email: kampsycode@gmail.com
