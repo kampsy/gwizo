@@ -52,7 +52,7 @@ DeepStem: The ingested word goes through every step in the algorithm.
   }
   Results
   ---------------------
-  Steps used: Step_1a() then Step_2()
+  Steps used: Step1a() then Step2()
   Stem: able
 </pre>
 
@@ -96,7 +96,7 @@ the Step that was used instead of the stem.
   }
   Results
   ---------------------
-  Steps used: Step_1a()
+  Steps used: Step1a()
 </pre>
 
 Vowels, Consonants and Measure
@@ -157,16 +157,16 @@ you can explicitly specify which Step to use on an ingested string.
   func main() {
     octopus := gwizo.Ingest("troubled")
 
-    // Stem only with Step_1b
-    fmt.Println(octopus.Step_1b())
+    // Stem only with Step1b
+    fmt.Println(octopus.Step1b())
 
     octopus.Word = "vietnamization"
-    // Stem only with Step_2
-    fmt.Println(octopus.Step_2())
+    // Stem only with Step2
+    fmt.Println(octopus.Step2())
 
     octopus.Word = "electriciti"
-    // Stem only with Step_3
-    fmt.Println(octopus.Step_3())
+    // Stem only with Step3
+    fmt.Println(octopus.Step3())
 
     // You get the idea!
   }
