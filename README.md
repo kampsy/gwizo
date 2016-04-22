@@ -180,11 +180,7 @@ you can explicitly specify which Step to use on an ingested string.
 File Stem Performance.
 ====================================================
 gwizo stemmed a file input.txt containing 23531 words in 1.814791104s
-<<<<<<< HEAD
 on AMD C655 Laptop.
-=======
-on my computer
->>>>>>> 802c8414914e6b1a23c52d15bcd031cffab39589
 <pre>
   package main
 
