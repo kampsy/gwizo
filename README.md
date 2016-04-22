@@ -1,5 +1,5 @@
-gwizo
-======
+gwizo v 1.0
+===========
 <code>The stemmer with a magic touch </code>
 <a href="https://youtu.be/At0orCwqHwM">Play Screencast</a>
 <br>
@@ -11,8 +11,8 @@ gwizo
 gwizo |pronounced as [guizo]| is the Next generation Native Go implementation of the
 Porter Stemmer algorithm (An algorithm for suffix stripping M.F.Porter 1980 see:
 (http://tartarus.org/martin/PorterStemmer/def.txt).
-The uniqueness of gwizo is not that it is open source. Its that it's well designed and   
-extensible. It is designed to be extensible, so that developers can easily create
+The uniqueness of gwizo is not that it is open source. Its that it's well designed.
+It is designed to be extensible, so that developers can easily create
 new experiences.(see examples below).
 
 Gwizo is an awesome tool for projects involving:
@@ -179,8 +179,8 @@ you can explicitly specify which Step to use on an ingested string.
 
 File Stem Performance.
 ====================================================
-gwizo stemmed a file input.txt containing 23531 in 1.814791104s
-on my computer
+gwizo stemmed a file input.txt containing 23531 words in 1.814791104s
+on AMD C655 Laptop.
 <pre>
   package main
 
