@@ -238,6 +238,9 @@ BSD style - see license file.
 Developer
 ===============
 kampamba chanda (a.k.a kampsy).
-twitter @kampsy
-google+ google.com/+kampambachanda
+<br>
+Twitter @kampsy
+<br>
+Google+ google.com/+kampambachanda
+<br>
 email: kampsycode@gmail.com
