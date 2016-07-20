@@ -34,7 +34,7 @@ func Ingest(w string) Octopus {
 	wordLower := strings.ToLower(w)
 	for num := 0; num < len(wordLower); num++ {
 
-		// Check for y at the beginning.
+		// Check for vowels at index 0 y included.
 		if num == 0 {
 			if string(wordLower[num]) == y || string(wordLower[num]) == a || string(wordLower[num]) == e ||
 				string(wordLower[num]) == i || string(wordLower[num]) == o ||
@@ -217,8 +217,7 @@ func (oct *Octopus) HasEndl() bool {
 
 /*Step1a deals with plurals and past participles. The subsequent steps are
 much more straightforward.
-Step 1A according the stemmer doc.
-======================================*/
+Step 1A according the stemmer doc.*/
 func (oct *Octopus) Step1a() string {
 	str := oct.Word
 	oct.thinian(str) // remake for the word
