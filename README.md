@@ -35,25 +35,24 @@ Installation
 DeepStem, ShallowStem, ShallowStemmed
 ====================================================
 DeepStem: The ingested word goes through every step in the algorithm.
-<pre>
-  package main
+```go
+package main
 
-  import (
-    "fmt"
-    "github.com/kampsy/gwizo"
-  )
+import (
+  "fmt"
+  "github.com/kampsy/gwizo"
+)
 
-  func main() {
-    octopus := gwizo.Ingest("abilities")
-
-    str := octopus.DeepStem()
-    fmt.Printf("Stem: %s\n", str)
-  }
+func main() {
+  octopus := gwizo.Ingest("abilities")
+  str := octopus.DeepStem()
+  fmt.Printf("Stem: %s\n", str)
+}
+```
   Results
   ---------------------
   Steps used: Step1a() then Step2()
   Stem: able
-</pre>
 
 ShallowStem: The word Goes through each step, from top to bottom like in DeepStem. The
 difference is that it bells out the moment a step Stems the ingested word.
