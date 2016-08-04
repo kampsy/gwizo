@@ -24,7 +24,7 @@ To install, simply run in a terminal:
 
 ## Usage
 
-### DeepStem, ShallowStem, ShallowStemmed
+### DeepStem, ShallowStem, ShallowStemmed.
 
 DeepStem: The ingested word goes through every step in the algorithm.
 ```go
@@ -41,30 +41,36 @@ func main() {
   fmt.Printf("Stem: %s\n", str)
 }
 ```
+```sh
 $ go run main.go
+
 Stem: able
+```
 
-ShallowStem: The word Goes through each step, from top to bottom like in DeepStem. The
-difference is that it bells out the moment a step Stems the ingested word.
-<pre>
-  package main
+### ShallowStem.
 
-  import (
-    "fmt"
-    "github.com/kampsy/gwizo"
-  )
+The word Goes through each step in accending order just like DeepStem. But The
+difference is that it return when the original word is changed.
+```go
+package main
 
-  func main() {
-    octopus := gwizo.Ingest("abilities")
+import (
+  "fmt"
+  "github.com/kampsy/gwizo"
+)
 
-    str := octopus.ShallowStem()
-    fmt.Printf("Stem: %s\n", str)
-  }
-  Results
-  ---------------------
-  Steps used: Step_1a()
-  Stem: abiliti
-</pre>
+func main() {
+  octopus := gwizo.Ingest("abilities")
+  str := octopus.ShallowStem()
+  fmt.Printf("Stem: %s\n", str)
+}
+```
+
+```sh
+$ go run main.go
+
+Stem: abiliti
+```
 
 ShallowStemmed: Works exactly like ShallowStem. The difference is that it returns
 the Step that was used instead of the stem.
