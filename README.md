@@ -1,11 +1,6 @@
-gwizo v 1.0
-===========
-<code>The stemmer with a magic touch </code>
+<h1 align="center">Gwizo</h1>
 <br>
-<img src="https://github.com/kampsy/gwizo/blob/master/img/gwizo.png" height="200px" width="200px">
-<br>
-<code>image made by Renee French under Creative Commons 3.0 Attributions. Modified and improved by Olga Shalakhina osshalakhina@gmail.com</code>
-<hr>
+![home](https://github.com/kampsy/gwizo/blob/master/img/gwizo.png)
 
 gwizo |pronounced as [guizo]| is the Next generation Native Go implementation of the
 Porter Stemmer algorithm (An algorithm for suffix stripping M.F.Porter 1980 see:
@@ -19,21 +14,18 @@ Gwizo is an awesome tool for projects involving:
 2) Inverted indices for Information Retrieval Systems eg Search Engines.
 
 
-Note: I made a few modification to gwizo for it to pass all tests. The original algorithm
-at http://tartarus.org/martin/PorterStemmer/def.txt) has a few issues(opinion!).
-
 The string that the Ingest() function takes is case insensitive
 
-Installation
-------------
-<pre>
-  go get github.com/kampsy/gwizo
-</pre>
+## Installation
 
-[[[[[ Examples ]]]]]
+To install, simply run in a terminal:
 
-DeepStem, ShallowStem, ShallowStemmed
-====================================================
+    go get github.com/kampsy/gwizo
+
+## Usage
+
+### DeepStem, ShallowStem, ShallowStemmed
+
 DeepStem: The ingested word goes through every step in the algorithm.
 ```go
 package main
@@ -49,10 +41,8 @@ func main() {
   fmt.Printf("Stem: %s\n", str)
 }
 ```
-  Results
-  ---------------------
-  Steps used: Step1a() then Step2()
-  Stem: able
+$ go run main.go
+Stem: able
 
 ShallowStem: The word Goes through each step, from top to bottom like in DeepStem. The
 difference is that it bells out the moment a step Stems the ingested word.
