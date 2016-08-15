@@ -16,15 +16,15 @@ Gwizo is an awesome tool for projects involving:
 
 The string that the Ingest() function takes is case insensitive
 
-## Installation
+### Installation
 
 To install, simply run in a terminal:
 
     go get github.com/kampsy/gwizo
 
-## Usage
+# Usage
 
-### DeepStem, ShallowStem, ShallowStemmed.
+## DeepStem, ShallowStem, ShallowStemmed.
 
 DeepStem: The ingested word goes through every step in the algorithm.
 ```go
@@ -47,7 +47,7 @@ $ go run main.go
 Stem: able
 ```
 
-### ShallowStem.
+## ShallowStem.
 
 The word Goes through each step in accending order just like DeepStem. But The
 difference is that it return when the original word is changed.
@@ -72,7 +72,7 @@ $ go run main.go
 Stem: abiliti
 ```
 
-### ShallowStemmed.
+## ShallowStemmed.
 
 Works exactly like ShallowStem. The difference is that it returns
 the Step that was used instead of the stem.
@@ -98,7 +98,7 @@ $ go run main.go
 Steps used: Step1a()
 ```
 
-### Vowels, Consonants and Measure
+## Vowels, Consonants and Measure
 
 gwizo returns a type called Octopus which has the following fields; The ingested
 string Word, VowCon which is the vowel consonut pattern and the Measure value
@@ -144,7 +144,7 @@ abilities Has 4 Consonants
 values:  {abilities vcvcvcvvc 4}
 ```
 
-### Access Any Step Directly
+## Access Any Step Directly
 
 gwizo is so extensible that it allows you to use its core components.
 you can explicitly specify which Step to use on an ingested string.
@@ -181,7 +181,7 @@ vietnamize
 electric
 ```
 
-### File Stem Performance.
+## File Stem Performance.
 
 gwizo stemmed a file input.txt containing 23531 words in 1.814791104s
 on AMD C655 Laptop.
