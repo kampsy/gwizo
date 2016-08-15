@@ -16,7 +16,7 @@ Gwizo is an awesome tool for projects involving:
 
 The string that the Ingest() function takes is case insensitive
 
-### Installation
+## Installation
 
 To install, simply run in a terminal:
 
@@ -41,7 +41,7 @@ func main() {
   fmt.Printf("Stem: %s\n", str)
 }
 ```
-```sh
+```shell
 $ go run main.go
 
 Stem: able
@@ -66,7 +66,7 @@ func main() {
 }
 ```
 
-```sh
+```shell
 $ go run main.go
 
 Stem: abiliti
@@ -92,7 +92,7 @@ func main() {
 }
 ```
 
-```sh
+```shell
 $ go run main.go
 
 Steps used: Step1a()
@@ -173,7 +173,7 @@ func main() {
   // You get the idea!
 }
 ```
-```sh
+```shell
 $ go run main.go
 
 trouble
@@ -232,7 +232,7 @@ on AMD C655 Laptop.
     }
   }
 ```
-```sh
+```shell
 $ go run main.go
 
 Done After: 1.814791104s
