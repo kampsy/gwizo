@@ -72,33 +72,38 @@ $ go run main.go
 Stem: abiliti
 ```
 
-ShallowStemmed: Works exactly like ShallowStem. The difference is that it returns
+### ShallowStemmed.
+
+Works exactly like ShallowStem. The difference is that it returns
 the Step that was used instead of the stem.
-<pre>
-  package main
+```go
+package main
 
-  import (
-    "fmt"
-    "github.com/kampsy/gwizo"
-  )
+import (
+  "fmt"
+  "github.com/kampsy/gwizo"
+)
 
-  func main() {
-    octopus := gwizo.Ingest("abilities")
+func main() {
+  octopus := gwizo.Ingest("abilities")
 
-    str := octopus.ShallowStemmed()
-    fmt.Printf("Stem: %s\n", str)
-  }
-  Results
-  ---------------------
-  Steps used: Step1a()
-</pre>
+  str := octopus.ShallowStemmed()
+  fmt.Printf("Step Used: %s\n", str)
+}
+```
 
-Vowels, Consonants and Measure
-====================================================
+```sh
+$ go run main.go
+
+Steps used: Step1a()
+```
+
+### Vowels, Consonants and Measure
+
 gwizo returns a type called Octopus which has the following fields; The ingested
 string Word, VowCon which is the vowel consonut pattern and the Measure value
 [v]vc{m}[c]
-<pre>
+```go
   package main
 
   import (
@@ -107,40 +112,43 @@ string Word, VowCon which is the vowel consonut pattern and the Measure value
     "strings"
   )
 
-  func main() {
-    octopus := gwizo.Ingest("abilities")
+func main() {
+  octopus := gwizo.Ingest("abilities")
 
-    // VowCon
-    fmt.Printf("%s has Pattern %s \n", octopus.Word, octopus.VowCon)
+  // VowCon
+  fmt.Printf("%s has Pattern %s \n", octopus.Word, octopus.VowCon)
 
-    // Measure value [v]vc{m}[c]
-    fmt.Printf("%s has Measure value %d \n", octopus.Word, octopus.Measure)
+  // Measure value [v]vc{m}[c]
+  fmt.Printf("%s has Measure value %d \n", octopus.Word, octopus.Measure)
 
-    // Number of Vowels
-    v := strings.Count(octopus.VowCon, "v")
-    fmt.Printf("%s Has %d Vowels \n", octopus.Word, v)
+  // Number of Vowels
+  v := strings.Count(octopus.VowCon, "v")
+  fmt.Printf("%s Has %d Vowels \n", octopus.Word, v)
 
-    // Number of Consonants
-    c := strings.Count(octopus.VowCon, "c")
-    fmt.Printf("%s Has %d Consonants\n", octopus.Word, c)
+  // Number of Consonants
+  c := strings.Count(octopus.VowCon, "c")
+  fmt.Printf("%s Has %d Consonants\n", octopus.Word, c)
 
-    // Or just print all of the values
-    fmt.Println("values: ", octopus)// Type Octopus implements the Stringer interface.
-  }
-  Results
-  ---------------------
-  abilities has Pattern vcvcvcvvc
-  abilities has Measure value 4
-  abilities Has 5 Vowels
-  abilities Has 4 Consonants
-  values:  {abilities vcvcvcvvc 4}
-</pre>
+  // Or just print all of the values
+  fmt.Println("values: ", octopus)// Type Octopus implements the Stringer interface.
+}
+```
 
-Access Any Step Directly
-====================================================
+```bash
+$ go run main.go
+
+abilities has Pattern vcvcvcvvc
+abilities has Measure value 4
+abilities Has 5 Vowels
+abilities Has 4 Consonants
+values:  {abilities vcvcvcvvc 4}
+```
+
+### Access Any Step Directly
+
 gwizo is so extensible that it allows you to use its core components.
 you can explicitly specify which Step to use on an ingested string.
-<pre>
+```go
   package main
 
   import (
@@ -148,34 +156,36 @@ you can explicitly specify which Step to use on an ingested string.
     "github.com/kampsy/gwizo"
   )
 
-  func main() {
-    octopus := gwizo.Ingest("troubled")
+func main() {
+  octopus := gwizo.Ingest("troubled")
 
-    // Stem only with Step1b
-    fmt.Println(octopus.Step1b())
+  // Stem only with Step1b
+  fmt.Println(octopus.Step1b())
 
-    octopus.Word = "vietnamization"
-    // Stem only with Step2
-    fmt.Println(octopus.Step2())
+  octopus.Word = "vietnamization"
+  // Stem only with Step2
+  fmt.Println(octopus.Step2())
 
-    octopus.Word = "electriciti"
-    // Stem only with Step3
-    fmt.Println(octopus.Step3())
+  octopus.Word = "electriciti"
+  // Stem only with Step3
+  fmt.Println(octopus.Step3())
 
-    // You get the idea!
-  }
-  Results
-  ---------------------
-  trouble
-  vietnamize
-  electric
-</pre>
+  // You get the idea!
+}
+```
+```sh
+$ go run main.go
 
-File Stem Performance.
-====================================================
+trouble
+vietnamize
+electric
+```
+
+### File Stem Performance.
+
 gwizo stemmed a file input.txt containing 23531 words in 1.814791104s
 on AMD C655 Laptop.
-<pre>
+```go
   package main
 
   import (
@@ -221,21 +231,21 @@ on AMD C655 Laptop.
       fmt.Println(err)
     }
   }
-  Results
-  ---------------------
-  Done After: 1.814791104s
-</pre>
+```
+```sh
+$ go run main.go
 
-License
-==========
+Done After: 1.814791104s
+```
+
+## License
 BSD style - see license file.
 
-Developer
-===============
+## Developer
 kampamba chanda (a.k.a kampsy).
 <br>
-Twitter @kampsy
+Twitter: ***@kampsy***
 <br>
-Google+ google.com/+kampambachanda
+Google+: ***google.com/+kampambachanda***
 <br>
-email: kampsycode@gmail.com
+email: ***kampsycode@gmail.com***
