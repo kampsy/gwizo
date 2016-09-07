@@ -9,7 +9,7 @@ Please make sure you clearly explain why your patches or feature should be pulle
 All Contributions are accept through the GitHub pull requests.
 
 
-General questions should go to [kampsycode@gmail.com]
+General questions should go to [kampambachanda@gmail.com]
 
 Unless otherwise noted, gwizo source files are distributed under
 the BSD-style license found in the LICENSE file.
