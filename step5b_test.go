@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kampsy/gwizo/gwizo"
+	"github.com/kampsy/gwizo"
 )
 
 func TestStep5b(t *testing.T) {

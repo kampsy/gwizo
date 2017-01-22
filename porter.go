@@ -1,9 +1,9 @@
-/*Package porter implement Porter, M. "An algorithm for suffix stripping."
+/*Package gwizo implement Porter, M. "An algorithm for suffix stripping."
 Program 14.3 (1980): 130-137.
 Martin Porter, the algorithm's inventor, maintains a web page about the
 algorithm at http://www.tartarus.org/~martin/PorterStemmer/
 */
-package porter
+package gwizo
 
 import (
 	"fmt"
