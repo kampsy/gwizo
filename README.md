@@ -2,7 +2,9 @@
 
 ![home](https://github.com/kampsy/gwizo/blob/master/img/gwizo.png)
 
+[![Gwizo version](https://img.shields.io/badge/gwizo-2.0-green.svg)](https://github.com/kampsy/gwizo)
 [![GoDoc](https://godoc.org/github.com/kampsy/gwizo?status.svg)](https://godoc.org/github.com/kampsy/gwizo)
+[![License](https://img.shields.io/badge/license-BSD%20Style-blue.svg)](https://github.com/kampsy/gwizo/blob/master/LICENSE)
 
 Package gwizo implements Porter Stemmer algorithm, M. "An algorithm for suffix stripping."
 Program 14.3 (1980): 130-137.
@@ -132,15 +134,3 @@ abilities Has 4 Consonants
 $ go run main.go
 
 ```
-
-## License
-BSD style - see license file.
-
-## Developer
-kampamba chanda (a.k.a kampsy).
-<br>
-Twitter: ***@kampsy***
-<br>
-Google+: ***google.com/+kampambachanda***
-<br>
-email: ***kampambachanda@gmail.com***
