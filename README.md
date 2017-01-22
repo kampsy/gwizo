@@ -1,9 +1,10 @@
 # gwizo
-[![GoDoc](https://godoc.org/github.com/kampsy/gwizo?status.svg)](https://godoc.org/github.com/kampsy/gwizo)
-<br>
+
 ![home](https://github.com/kampsy/gwizo/blob/master/img/gwizo.png)
 
-Package gwizo implement Porter, M. "An algorithm for suffix stripping."
+[![GoDoc](https://godoc.org/github.com/kampsy/gwizo?status.svg)](https://godoc.org/github.com/kampsy/gwizo)
+
+Package gwizo implements Porter Stemmer algorithm, M. "An algorithm for suffix stripping."
 Program 14.3 (1980): 130-137.
 Martin Porter, the algorithm's inventor, maintains a web page about the
 algorithm at http://www.tartarus.org/~martin/PorterStemmer/
