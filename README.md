@@ -5,6 +5,7 @@
 [![Gwizo version](https://img.shields.io/badge/gwizo-2.0-green.svg)](https://github.com/kampsy/gwizo)
 [![GoDoc](https://godoc.org/github.com/kampsy/gwizo?status.svg)](https://godoc.org/github.com/kampsy/gwizo)
 [![License](https://img.shields.io/badge/license-BSD%20Style-blue.svg)](https://github.com/kampsy/gwizo/blob/master/LICENSE)
+[![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/kampsy)
 
 Package gwizo implements Porter Stemmer algorithm, M. "An algorithm for suffix stripping."
 Program 14.3 (1980): 130-137.
