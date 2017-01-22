@@ -1,4 +1,5 @@
-<h1 align="center">gwizo</h1>
+# gwizo
+[![GoDoc](https://godoc.org/github.com/kampsy/gwizo?status.svg)](https://godoc.org/github.com/kampsy/gwizo)
 <br>
 ![home](https://github.com/kampsy/gwizo/blob/master/img/gwizo.png)
 
@@ -13,7 +14,6 @@ To install, simply run in a terminal:
 
     go get github.com/kampsy/gwizo
 
-# Usage
 
 ## Stem
 
