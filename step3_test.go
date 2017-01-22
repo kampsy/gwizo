@@ -1,28 +1,29 @@
-/*Package porter implement Porter, M. "An algorithm for suffix stripping."
+/*Package gwizo implement Porter, M. "An algorithm for suffix stripping."
 Program 14.3 (1980): 130-137.
 Martin Porter, the algorithm's inventor, maintains a web page about the
 algorithm at http://www.tartarus.org/~martin/PorterStemmer/
 */
-package porter
+package gwizo
 
 import (
 	"fmt"
 	"testing"
 
-	"github.com/kampsy/gwizo/porter"
+	"github.com/kampsy/gwizo"
 )
 
-func TestStep5a(t *testing.T) {
+func TestStep3(t *testing.T) {
 	input := []string{
-		"probate", "rate", "cease",
+		"triplicate", "formative", "formalize", "electriciti", "electrical",
+		"hopeful", "goodness",
 	}
 
 	stem := []string{
-		"probat", "rate", "ceas",
+		"triplic", "form", "formal", "electric", "electric", "hope", "good",
 	}
 
 	for i := 0; i < len(input); i++ {
-		token := porter.Step5a(input[i])
+		token := gwizo.Step3(input[i])
 		if token != stem[i] {
 			t.Errorf(fmt.Sprintf("Test For %s -FAIL- [%s != %s]", input[i], token, stem[i]))
 		} else {
