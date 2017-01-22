@@ -1,7 +1,0 @@
-language: go
-
-go:
-  - 1.x
-
-before_install:
-- go get -v github.com/kampsy/gwizo
