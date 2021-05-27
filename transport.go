@@ -53,7 +53,7 @@ func makeSignoutEndpoint(svc WalletService) endpoint.Endpoint {
 			return signoutResponse{err.Error()}, err
 		}
 
-		return signinResponse{msg, ""}, nil
+		return signoutResponse{msg}, nil
 	}
 }
 

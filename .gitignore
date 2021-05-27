@@ -17,3 +17,6 @@
 
 # ignore .env
 .env
+
+#Ignore binery
+dazwallet

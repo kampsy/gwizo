@@ -46,6 +46,9 @@ func main() {
 		logger.Log("method", "Critical", "error", fmt.Sprint(err != nil))
 	}
 
+	// run Database Migrations
+	migrate(db)
+
 	fieldKeys := []string{"method", "error"}
 	requestCount := kitprometheus.NewCounterFrom(stdprometheus.CounterOpts{
 		Namespace: "my_group",
