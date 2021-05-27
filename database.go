@@ -2,9 +2,6 @@ package main
 
 import (
 	"time"
-
-	_"github.com/gofiber/fiber/v2/middleware/timeout"
-	
 	"github.com/jinzhu/gorm"
 )
 
