@@ -103,7 +103,7 @@ func Migrate(db *gorm.DB) {
 	}
 }
 
-func randomColour() string {
+func RandomColour() string {
 	colours := []string{
 		"red", "green", "brown", "orange", "purple", "pink",
 	}
@@ -115,7 +115,7 @@ func randomColour() string {
 // Create a private user for testing purposes
 func createPrivateUser(db *gorm.DB) error {
 	// Users
-	colour := randomColour()
+	colour := RandomColour()
 
 	// Generate userID
 	cpuID := uuid.New()
