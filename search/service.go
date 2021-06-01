@@ -26,7 +26,7 @@ func (svc service) Search(query string) ([]data, error) {
 	var searchResult []data
 	for _, user := range userList {
 		searchResult = append(searchResult, data{
-			FirstName: user.Firstname, LastName: user.Lastname, PhoneNumber: user.PhoneNumber,
+			FirstName: user.Firstname, LastName: user.Lastname, UserName: user.Username, PhoneNumber: user.PhoneNumber,
 			Email: user.Email, UserID: user.UserID,
 		})
 	}

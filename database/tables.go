@@ -71,6 +71,7 @@ type Transaction struct {
 	BalanceBefore     int    `gorm:"type:int;not null unique" json:"balance_before"`
 	Amount            int    `gorm:"type:int;not null unique" json:"amount"`
 	BalanceAfter      int    `gorm:"type:int;not null unique" json:"balance_after"`
+	Note              string `gorm:"type:varchar(255);not null" json:"note"`
 	StatusID          int    `gorm:"type:int;not null unique" json:"status_id"`
 	Status            Status
 	TransactionTypeID int `gorm:"type:int;not null unique" json:"transaction_type_id"`

@@ -18,6 +18,7 @@ type searchResponse struct {
 type data struct {
 	FirstName   string `json:"firstname"`
 	LastName    string `json:"lastname"`
+	UserName    string `json:"username"`
 	PhoneNumber string `json:"phonenumber"`
 	Email       string `json:"email"`
 	UserID      string `json:"userid"`

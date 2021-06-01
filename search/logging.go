@@ -19,7 +19,7 @@ func (mw loggingMiddleware) Search(query string) (output []data, err error) {
 		mw.Logger.Log(
 			"service", "search",
 			"query", query,
-			"output", output,
+			"search results", len(output),
 			"err", err,
 			"took", time.Since(begin),
 		)
