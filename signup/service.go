@@ -22,18 +22,18 @@ type Service struct{
 	DB *gorm.DB
 }
 
-func ( svc Service) Signup(firstName,lastName, phone_number, password,pin,username, user_id,  email, balance , user_type_name string, status_id, account_type_id, account_id, user_type_id int ) ( string,  error ){
+func ( svc Service) Signup(FirstName,LastName, Phone_number, Password,Pin,Username, User_id,  Email, Balance , User_type_name string, Status_id, Account_type_id, Account_id, User_type_id int  ) ( string,  error ){
 	db := svc.DB
 	//UserID generating 
 	cpuID := uuid.New()
 	userID := fmt.Sprintf("us_%s", cpuID.String())
 	//hashing the password 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(Password), bcrypt.MinCost)
 	if err != nil {
 		return "", err
 	}
 	// hashing the pin
-	hashedPin, err := bcrypt.GenerateFromPassword([]byte(pin), bcrypt.MinCost)
+	hashedPin, err := bcrypt.GenerateFromPassword([]byte(Pin), bcrypt.MinCost)
 	if err != nil {
 		return "" ,err
 	}
@@ -47,28 +47,28 @@ func ( svc Service) Signup(firstName,lastName, phone_number, password,pin,userna
 	user := database.Users{
 		Model:                  gorm.Model{},
 		UserID:                 userID,
-		Firstname:              firstName,
-		Lastname:               lastName,
-		PhoneNumber:            phone_number,
+		Firstname:              FirstName,
+		Lastname:               LastName,
+		PhoneNumber:            Phone_number,
 		Password:               hashedPassword,
 		Pin:                    hashedPin,
-		Username:               username,
-		AccountID:              account_id,
+		Username:               Username,
+		AccountID:              Account_id,
 		Account:                database.Account{
 			UserID: userID, 
-			Balance: balance, 
-			AccountTypeID: account_type_id, 
-			StatusID: status_id,
+			Balance: Balance, 
+			AccountTypeID: Account_type_id, 
+			StatusID: Status_id,
 		},
-		UserTypeID:             user_type_id, // <<<<<======i thought of using the UserID instead of the  user_type_id but the data types in the structs are different
+		UserTypeID:             User_type_id, // <<<<<======i thought of using the UserID instead of the  user_type_id but the data types in the structs are different
 		UserType:               database.UserType{
-			Name:	 user_type_name,
+			Name:	 User_type_name,
 		},
 		Colour:                 colour,
 		LoginAttempts:          0,
 		LoginTimeout:           time.Time{},
 		Virtual_account_number: vanID, 
-		Email:                  email,
+		Email:                  Email,
 	}
 //Creating the User profile and Account 
  err = db.Create(&user).Error
