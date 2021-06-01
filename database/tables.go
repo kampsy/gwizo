@@ -1,7 +1,8 @@
-package main
+package database
 
 import (
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/google/uuid"
@@ -21,7 +22,6 @@ type Users struct {
 	PhoneNumber            string `gorm:"type:varchar(20);not null unique" json:"phone_number"`
 	Password               []byte `gorm:"type:varbinary(255);not null" json:"password"`
 	Pin                    []byte `gorm:"type:varbinary(255);not null unique" json:"pin"`
-	Token                  string `gorm:"type:varchar(255);not null unique" `
 	Username               string `gorm:"type:varchar(255);not null unique" json:"username"`
 	AccountID              int    `gorm:"type:int;not null unique" json:"account_id"`
 	Account                Account
@@ -89,8 +89,8 @@ type TransferType struct {
 	Description string `gorm:"type:varchar(255);not null unique" json:"transfer_type_description"`
 }
 
-// migrate
-func migrate(db *gorm.DB) {
+// Migrate
+func Migrate(db *gorm.DB) {
 	// Migrate the schema
 	db.AutoMigrate(Users{}, Account{}, UserType{}, AccountType{}, Status{}, Evoucher{}, Transaction{}, TransactionType{}, TransferType{})
 
@@ -100,6 +100,15 @@ func migrate(db *gorm.DB) {
 	if user.UserID == "" {
 		createPrivateUser(db)
 	}
+}
+
+func randomColour() string {
+	colours := []string{
+		"red", "green", "brown", "orange", "purple", "pink",
+	}
+	rand.Seed(time.Now().UnixNano())
+	num := rand.Intn(len(colours) - 1)
+	return colours[num]
 }
 
 // Create a private user for testing purposes
@@ -129,11 +138,6 @@ func createPrivateUser(db *gorm.DB) error {
 		return err
 	}
 
-	// Todo use JWT
-	// Generate users unique token.
-	tokenID := uuid.New()
-	token := fmt.Sprintf("tok_%s", tokenID.String())
-
 	// parse the time
 	const longForm = "Jan 2, 2006 at 3:04pm (MST)"
 	loginTimeout, _ := time.Parse(longForm, "Feb 3, 2013 at 7:54pm (CAT)")
@@ -157,7 +161,7 @@ func createPrivateUser(db *gorm.DB) error {
 
 	// save to db
 	err = tx.Create(&Users{
-		UserID: userID, Firstname: firstName, Lastname: lastName, PhoneNumber: phoneNumber, Password: hashedPassword, Pin: hashedPin, Token: token,
+		UserID: userID, Firstname: firstName, Lastname: lastName, PhoneNumber: phoneNumber, Password: hashedPassword, Pin: hashedPin,
 		Username: username, Account: Account{UserID: userID, Balance: balance, AccountType: AccountType{Name: accountTypeName}}, UserType: UserType{Name: utn},
 		Colour: colour, LoginTimeout: loginTimeout, Virtual_account_number: van, Email: email,
 	}).Error

@@ -1,6 +1,9 @@
 package main
 
 import (
+	"dazwallet/balance"
+	"dazwallet/database"
+	"dazwallet/signin"
 	"flag"
 	"fmt"
 	stdlog "log"
@@ -25,6 +28,16 @@ func init() {
 	}
 }
 
+func httpMethodCtl(method string, h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == method {
+			h.ServeHTTP(w, r)
+		} else {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		}
+	})
+}
+
 func main() {
 
 	logger := log.NewLogfmtLogger(os.Stderr)
@@ -47,7 +60,7 @@ func main() {
 	}
 
 	// run Database Migrations
-	migrate(db)
+	database.Migrate(db)
 
 	fieldKeys := []string{"method", "error"}
 	requestCount := kitprometheus.NewCounterFrom(stdprometheus.CounterOpts{
@@ -64,26 +77,30 @@ func main() {
 		Help:      "Total duration of requests in microseconds.",
 	}, fieldKeys)
 
-	var svc WalletService
-	svc = walletService{db}
-	svc = loggingMiddleware{logger, svc}
-	svc = instrumentingMiddleware{requestCount, requestLatency, svc}
+	var ssvc signin.Servicer
+	ssvc = signin.Service{db}
+	ssvc = signin.LoggingMiddleware{logger, ssvc}
+	ssvc = signin.InstrumentingMiddleware{requestCount, requestLatency, ssvc}
 
 	signinHandler := httptransport.NewServer(
-		makeSigninEndpoint(svc),
-		decodeSigninRequest,
-		encodeResponse,
+		signin.MakeSigninEndpoint(ssvc),
+		signin.DecodeSigninRequest,
+		signin.EncodeResponse,
 	)
 
-	signoutHandler := httptransport.NewServer(
-		makeSignoutEndpoint(svc),
-		decodeSignoutRequest,
-		encodeResponse,
+	var balanceSvc balance.Servicer
+	balanceSvc = balance.Service{db}
+	balanceSvc = balance.LoggingMiddleware{logger, balanceSvc}
+	balanceSvc = balance.InstrumentingMiddleware{requestCount, requestLatency, balanceSvc}
+	balanceHandler := httptransport.NewServer(
+		balance.MakeBalanceEndpoint(balanceSvc),
+		balance.DecodeBalanceRequest,
+		balance.EncodeResponse,
 	)
 
-	http.Handle("/signin", signinHandler)
-	http.Handle("/signout", signoutHandler)
-	http.Handle("/metrics", promhttp.Handler())
+	http.Handle("/signin", httpMethodCtl("POST", signinHandler))
+	http.Handle("/balance", balanceHandler)
+	http.Handle("/metrics", httpMethodCtl("GET", promhttp.Handler()))
 	fmt.Printf("Running on %s:%d\n", *host, *port)
 	stdlog.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", *host, *port), nil))
 
