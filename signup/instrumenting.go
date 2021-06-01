@@ -15,13 +15,13 @@ type instrumentingMiddleware struct {
 }
 
 // Singin runtime behaviour
-func (mw instrumentingMiddleware) Signup(FirstName,LastName, Phone_number, Password,Pin,Username, User_id,  Email, Balance , User_type_name string , Status_id, Account_type_id, Account_id, User_type_id int ) (output string, err error) {
+func (mw instrumentingMiddleware) Signup(req signupData) (output string, err error) {
 	defer func(begin time.Time) {
 		lvs := []string{"service", "signup", "error", fmt.Sprint(err != nil)}
 		mw.requestCount.With(lvs...).Add(1)
 		mw.requestLatency.With(lvs...).Observe(time.Since(begin).Seconds())
 	}(time.Now())
 
-	output, err = mw.next.Signup(FirstName,LastName, Phone_number, Password,Pin,Username, User_id,Email, Balance , User_type_name, Status_id, Account_type_id, Account_id, User_type_id ) // i am having an erro here to 
+	output, err = mw.next.Signup(req)
 	return output, nil
 }

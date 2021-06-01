@@ -156,7 +156,7 @@ func createPrivateUser(db *gorm.DB) error {
 	balance := "10000.00"
 
 	// AccountType
-	accountTypeName := "a"
+	accountTypeName := "private user"
 
 	tx := db.Begin()
 

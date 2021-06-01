@@ -13,17 +13,17 @@ type loggingMiddleware struct {
 }
 
 // Signin ...
-func (mw loggingMiddleware) Signup(FirstName,LastName, Phone_number, Password,Pin,Username, User_id,  Email, Balance , User_type_name string, Status_id, Account_type_id, Account_id, User_type_id int ) (output string, err error) {
+func (mw loggingMiddleware) Signup(req signupData) (output string, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Log(
 			"service", "signup",
-			"username", Username,
+			"username", req.Username,
 			"output", output,
 			"err", err,
 			"took", time.Since(begin),
 		)
 	}(time.Now())
 
-	output, err = mw.next.Signup(FirstName,LastName, Phone_number, Password,Pin,Username, User_id,Email, Balance , User_type_name, Status_id, Account_type_id, Account_id, User_type_id ) // i am having an error here 
+	output, err = mw.next.Signup(req)
 	return
 }

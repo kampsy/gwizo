@@ -5,6 +5,7 @@ import (
 	"dazwallet/database"
 	"dazwallet/search"
 	"dazwallet/signin"
+	"dazwallet/signup"
 	"flag"
 	"fmt"
 	stdlog "log"
@@ -85,12 +86,12 @@ func main() {
 	// Search service handler
 	searchHandler := search.SearchHandler(db, logger, requestCount, requestLatency)
 	// Signup service handler
-	signupHandler := balance.BalanceHandler(db, logger, requestCount, requestLatency)
+	signupHandler := signup.SignupHandler(db, logger, requestCount, requestLatency)
 
 	http.Handle("/signin", httpMethodCtl("POST", signinHandler))
 	http.Handle("/balance", balanceHandler)
 	http.Handle("/search", searchHandler)
-	http.Handle("/search", signupHandler)
+	http.Handle("/signup", signupHandler)
 	http.Handle("/metrics", httpMethodCtl("GET", promhttp.Handler()))
 	fmt.Printf("Running on %s:%d\n", *host, *port)
 	stdlog.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", *host, *port), nil))
