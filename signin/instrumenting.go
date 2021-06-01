@@ -7,21 +7,21 @@ import (
 	"github.com/go-kit/kit/metrics"
 )
 
-// InstrumentingMiddleware
-type InstrumentingMiddleware struct {
-	RequestCount   metrics.Counter
-	RequestLatency metrics.Histogram
-	Next           Servicer
+// instrumentingMiddleware
+type instrumentingMiddleware struct {
+	requestCount   metrics.Counter
+	requestLatency metrics.Histogram
+	next           Servicer
 }
 
 // Singin runtime behaviour
-func (mw InstrumentingMiddleware) Signin(id, password string) (output string, err error) {
+func (mw instrumentingMiddleware) Signin(id, password string) (output string, err error) {
 	defer func(begin time.Time) {
-		lvs := []string{"method", "signin", "error", fmt.Sprint(err != nil)}
-		mw.RequestCount.With(lvs...).Add(1)
-		mw.RequestLatency.With(lvs...).Observe(time.Since(begin).Seconds())
+		lvs := []string{"service", "signin", "error", fmt.Sprint(err != nil)}
+		mw.requestCount.With(lvs...).Add(1)
+		mw.requestLatency.With(lvs...).Observe(time.Since(begin).Seconds())
 	}(time.Now())
 
-	output, err = mw.Next.Signin(id, password)
+	output, err = mw.next.Signin(id, password)
 	return
 }

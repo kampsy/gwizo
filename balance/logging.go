@@ -6,23 +6,23 @@ import (
 	"github.com/go-kit/kit/log"
 )
 
-type LoggingMiddleware struct {
-	Logger log.Logger
-	Next   Servicer
+type loggingMiddleware struct {
+	logger log.Logger
+	next   Servicer
 }
 
 // Balance ...
-func (mw LoggingMiddleware) Balance(userid string) (output string, err error) {
+func (mw loggingMiddleware) Balance(userid string) (output string, err error) {
 	defer func(begin time.Time) {
-		mw.Logger.Log(
-			"method", "signout",
+		mw.logger.Log(
+			"service", "balance",
 			"token", userid,
-			"output", output,
+			"amount", output,
 			"err", err,
 			"took", time.Since(begin),
 		)
 	}(time.Now())
 
-	output, err = mw.Next.Balance(userid)
+	output, err = mw.next.Balance(userid)
 	return
 }

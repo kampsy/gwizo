@@ -11,19 +11,23 @@ type balanceRequest struct {
 }
 
 type balanceResponse struct {
+	Data data `json:"data"`
+}
+
+type data struct {
 	Balance string `json:"balance"`
 }
 
-// MakeBalanceEndpoint ...
-func MakeBalanceEndpoint(svc Servicer) endpoint.Endpoint {
+// makeBalanceEndpoint ...
+func makeBalanceEndpoint(svc Servicer) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(balanceRequest)
 		amount, err := svc.Balance(req.UserID)
 
 		if err != nil {
-			return balanceResponse{""}, nil
+			return balanceResponse{data{""}}, nil
 		}
 
-		return balanceResponse{amount}, nil
+		return balanceResponse{data{amount}}, nil
 	}
 }

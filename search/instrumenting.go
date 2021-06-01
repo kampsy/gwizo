@@ -1,4 +1,5 @@
-package balance
+// package search adds search functionality to the wallet. search for people within dazwallet
+package search
 
 import (
 	"fmt"
@@ -14,13 +15,13 @@ type instrumentingMiddleware struct {
 	next           Servicer
 }
 
-func (mw instrumentingMiddleware) Balance(userid string) (output string, err error) {
+func (mw instrumentingMiddleware) Search(query string) (output []data, err error) {
 	defer func(begin time.Time) {
-		lvs := []string{"service", "balance", "error", fmt.Sprint(err != nil)}
+		lvs := []string{"service", "search", "error", fmt.Sprint(err != nil)}
 		mw.requestCount.With(lvs...).Add(1)
 		mw.requestLatency.With(lvs...).Observe(time.Since(begin).Seconds())
 	}(time.Now())
 
-	output, err = mw.next.Balance(userid)
+	output, err = mw.next.Search(query)
 	return
 }

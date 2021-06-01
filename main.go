@@ -3,6 +3,7 @@ package main
 import (
 	"dazwallet/balance"
 	"dazwallet/database"
+	"dazwallet/search"
 	"dazwallet/signin"
 	"flag"
 	"fmt"
@@ -12,7 +13,6 @@ import (
 
 	"github.com/go-kit/kit/log"
 	kitprometheus "github.com/go-kit/kit/metrics/prometheus"
-	httptransport "github.com/go-kit/kit/transport/http"
 	"github.com/joho/godotenv"
 	stdprometheus "github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -55,14 +55,15 @@ func main() {
 		dbConn = fmt.Sprintf("%s:%s@/%s?charset=utf8mb4&parseTime=True&loc=Local", os.Getenv("DB_PRO_USERNAME"), os.Getenv("DB_PRO_PASSWORD"), os.Getenv("DB_PRO_DATABASE"))
 	}
 	db, err := gorm.Open(mysql.Open(dbConn), &gorm.Config{})
+
 	if err != nil {
-		logger.Log("method", "Critical", "error", fmt.Sprint(err != nil))
+		logger.Log("service", "Critical", "error", fmt.Sprint(err != nil))
 	}
 
 	// run Database Migrations
 	database.Migrate(db)
 
-	fieldKeys := []string{"method", "error"}
+	fieldKeys := []string{"service", "error"}
 	requestCount := kitprometheus.NewCounterFrom(stdprometheus.CounterOpts{
 		Namespace: "my_group",
 		Subsystem: "string_service",
@@ -77,29 +78,16 @@ func main() {
 		Help:      "Total duration of requests in microseconds.",
 	}, fieldKeys)
 
-	var ssvc signin.Servicer
-	ssvc = signin.Service{db}
-	ssvc = signin.LoggingMiddleware{logger, ssvc}
-	ssvc = signin.InstrumentingMiddleware{requestCount, requestLatency, ssvc}
-
-	signinHandler := httptransport.NewServer(
-		signin.MakeSigninEndpoint(ssvc),
-		signin.DecodeSigninRequest,
-		signin.EncodeResponse,
-	)
-
-	var balanceSvc balance.Servicer
-	balanceSvc = balance.Service{db}
-	balanceSvc = balance.LoggingMiddleware{logger, balanceSvc}
-	balanceSvc = balance.InstrumentingMiddleware{requestCount, requestLatency, balanceSvc}
-	balanceHandler := httptransport.NewServer(
-		balance.MakeBalanceEndpoint(balanceSvc),
-		balance.DecodeBalanceRequest,
-		balance.EncodeResponse,
-	)
+	// Signin service handler
+	signinHandler := signin.SigninHandler(db, logger, requestCount, requestLatency)
+	// Balance service handler
+	balanceHandler := balance.BalanceHandler(db, logger, requestCount, requestLatency)
+	// Search service handler
+	searchHandler := search.SearchHandler(db, logger, requestCount, requestLatency)
 
 	http.Handle("/signin", httpMethodCtl("POST", signinHandler))
 	http.Handle("/balance", balanceHandler)
+	http.Handle("/search", searchHandler)
 	http.Handle("/metrics", httpMethodCtl("GET", promhttp.Handler()))
 	fmt.Printf("Running on %s:%d\n", *host, *port)
 	stdlog.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", *host, *port), nil))

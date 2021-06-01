@@ -10,12 +10,12 @@ type Servicer interface {
 	Balance(string) (string, error)
 }
 
-// Service ..
-type Service struct {
+// service ..
+type service struct {
 	DB *gorm.DB
 }
 
-func (svc Service) Balance(userid string) (string, error) {
+func (svc service) Balance(userid string) (string, error) {
 	db := svc.DB
 
 	var account database.Account
