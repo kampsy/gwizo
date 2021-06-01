@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-// DecodeBalanceRequest ...
-func DecodeBalanceRequest(_ context.Context, r *http.Request) (interface{}, error) {
+// decodeBalanceRequest ...
+func decodeBalanceRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var request balanceRequest
 
 	// Todo middleware will parse a token passed into the context
@@ -24,8 +24,8 @@ func DecodeBalanceRequest(_ context.Context, r *http.Request) (interface{}, erro
 	return request, nil
 }
 
-// EncodeResponse ...
-func EncodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
+// encodeBalanceResponse ...
+func encodeBalanceResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
 	w.Header().Add("Content-Type", "application/json")
 	return json.NewEncoder(w).Encode(response)
 }

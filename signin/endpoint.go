@@ -12,20 +12,25 @@ type signinRequest struct {
 }
 
 type signinResponse struct {
-	AccessToken string `json:"access_token"`
-	TokenType   string `json:"token_type"`
-	ExpiresIN   int    `json:"expires_in"`
+	Data data `json:"data"`
 }
 
-// MakeSigninEndpoint ...
-func MakeSigninEndpoint(svc Servicer) endpoint.Endpoint {
+type data struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+	ExpiresIN    int    `json:"expires_in"`
+}
+
+// makeSigninEndpoint ...
+func makeSigninEndpoint(svc Servicer) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(signinRequest)
 		token, err := svc.Signin(req.Username, req.Password)
 		if err != nil {
-			// get the error message
-			return signinResponse{"", token, 0}, nil
+			//
+			return signinResponse{data{"", "", 0}}, nil
 		}
-		return signinResponse{token, "bearer", 3600}, nil
+
+		return signinResponse{data{token, "", 3600}}, nil
 	}
 }
