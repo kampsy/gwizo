@@ -12,11 +12,11 @@ type Servicer interface {
 
 // service ..
 type service struct {
-	DB *gorm.DB
+	db *gorm.DB
 }
 
 func (svc service) Balance(userid string) (string, error) {
-	db := svc.DB
+	db := svc.db
 
 	var account database.Account
 	db.Where("user_id = ?", userid).Find(&account)

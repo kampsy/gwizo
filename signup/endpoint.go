@@ -30,7 +30,7 @@ func addSignupData(req signupRequest) signupData {
 
 type signupRequest struct {
 	FirstName   string `json:"firstname,omitempty"`
-	LastName    string `json:"lastname"`
+	LastName    string `json:"lastname.omitempty"`
 	PhoneNumber string `json:"phonenumber"`
 	Password    string `json:"password"`
 	Pin         string `json:"pin"`

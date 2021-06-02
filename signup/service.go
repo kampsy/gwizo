@@ -19,11 +19,11 @@ type Servicer interface {
 }
 
 type service struct {
-	DB *gorm.DB
+	db *gorm.DB
 }
 
 func (svc service) Signup(data signupData) (string, error) {
-	db := svc.DB
+	db := svc.db
 
 	//UserID generating
 	cpuID := uuid.New()

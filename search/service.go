@@ -13,12 +13,12 @@ type Servicer interface {
 }
 
 type service struct {
-	DB *gorm.DB
+	db *gorm.DB
 }
 
 // Search search for private users in the database
 func (svc service) Search(query string) ([]data, error) {
-	db := svc.DB
+	db := svc.db
 
 	var userList []database.Users
 	db.Where("firstname LIKE ?", "%"+query+"%").Find(&userList)

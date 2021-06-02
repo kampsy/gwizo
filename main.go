@@ -4,6 +4,7 @@ import (
 	"dazwallet/balance"
 	"dazwallet/database"
 	"dazwallet/search"
+	"dazwallet/send"
 	"dazwallet/signin"
 	"dazwallet/signup"
 	"flag"
@@ -79,19 +80,22 @@ func main() {
 		Help:      "Total duration of requests in microseconds.",
 	}, fieldKeys)
 
+	// Signup service handler
+	signupHandler := signup.SignupHandler(db, logger, requestCount, requestLatency)
 	// Signin service handler
 	signinHandler := signin.SigninHandler(db, logger, requestCount, requestLatency)
 	// Balance service handler
 	balanceHandler := balance.BalanceHandler(db, logger, requestCount, requestLatency)
 	// Search service handler
 	searchHandler := search.SearchHandler(db, logger, requestCount, requestLatency)
-	// Signup service handler
-	signupHandler := signup.SignupHandler(db, logger, requestCount, requestLatency)
+	// Send service handler
+	sendHandler := send.SendHandler(db, logger, requestCount, requestLatency)
 
+	http.Handle("/signup", signupHandler)
 	http.Handle("/signin", httpMethodCtl("POST", signinHandler))
 	http.Handle("/balance", balanceHandler)
 	http.Handle("/search", searchHandler)
-	http.Handle("/signup", signupHandler)
+	http.Handle("/send", sendHandler)
 	http.Handle("/metrics", httpMethodCtl("GET", promhttp.Handler()))
 	fmt.Printf("Running on %s:%d\n", *host, *port)
 	stdlog.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", *host, *port), nil))

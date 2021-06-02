@@ -19,8 +19,8 @@ func decodeBalanceRequest(_ context.Context, r *http.Request) (interface{}, erro
 	if err != nil {
 		return "", err
 	}
-
 	request.UserID = userid
+
 	return request, nil
 }
 

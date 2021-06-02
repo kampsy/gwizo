@@ -18,11 +18,11 @@ type Servicer interface {
 }
 
 type service struct {
-	DB *gorm.DB
+	db *gorm.DB
 }
 
 func (svc service) Signin(username, password string) (string, error) {
-	db := svc.DB
+	db := svc.db
 
 	formID := "phone_number"
 	sql := "phone_number = ?"
