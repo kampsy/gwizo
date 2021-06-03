@@ -2,7 +2,9 @@ package balance
 
 import (
 	"dazwallet/database"
+	"strconv"
 
+	"github.com/leekchan/accounting"
 	"github.com/pkg/errors"
 
 	"gorm.io/gorm"
@@ -18,6 +20,7 @@ type service struct {
 }
 
 var errTokenExpired = errors.New("Token has expired")
+var errUnableToFormatMoney = errors.New("Uable to format the money")
 
 func (svc service) Balance(userid string) (string, error) {
 	db := svc.db
@@ -28,5 +31,13 @@ func (svc service) Balance(userid string) (string, error) {
 		return "", errTokenExpired
 	}
 
-	return account.Balance, nil
+	// Lets format the money.
+	balanceF64, err := strconv.ParseFloat(account.Balance, 2)
+	if err != nil {
+		return "", errUnableToFormatMoney
+	}
+
+	ac := accounting.Accounting{Symbol: "K", Precision: 2}
+
+	return ac.FormatMoney(balanceF64), nil
 }

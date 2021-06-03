@@ -29,8 +29,10 @@ func makeBalanceEndpoint(svc Servicer) endpoint.Endpoint {
 			switch err {
 			case errTokenExpired:
 				return balanceResponse{Err: err.Error()}, nil
+			case errUnableToFormatMoney:
+				return balanceResponse{Err: err.Error()}, nil
 			default:
-				return balanceResponse{Err: "Unable to fetch balance"}, nil
+				return balanceResponse{Err: "Unable to get Account Balance"}, nil
 			}
 		}
 

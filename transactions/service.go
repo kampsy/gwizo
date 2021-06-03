@@ -35,6 +35,7 @@ func (svc service) Trans(userID string) ([]data, error) {
 			var userAcc database.Users
 			db.Where("user_id = ?", trans.Receiver).Find(&userAcc)
 			amountF64, err := strconv.ParseFloat(trans.Amount, 2)
+
 			if err != nil {
 				return transList, err
 			}
@@ -56,8 +57,6 @@ func (svc service) Trans(userID string) ([]data, error) {
 			})
 		}
 	}
-
-	fmt.Println(tr)
 
 	return transList, nil
 }
