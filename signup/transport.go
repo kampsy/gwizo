@@ -3,6 +3,7 @@ package signup
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -12,6 +13,7 @@ import (
 func decodeSignupRequest(ctx context.Context, r *http.Request) (interface{}, error) {
 	var request signupRequest
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		fmt.Println(request)
 		return nil, err
 	}
 	return request, nil

@@ -79,10 +79,9 @@ func (svc service) Signup(data signupData) (string, error) {
 		Email:                  data.Email,
 	}
 
-	//Creating the User profile and Account
+	// Creating the User profile and Account
 	err = db.Create(&user).Error
 	if err != nil {
-		fmt.Println(err)
 		return "", errUnableToCreateUser
 	}
 
