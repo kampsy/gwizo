@@ -19,7 +19,7 @@ func (mw loggingMiddleware) Signup(req signupData) (output string, err error) {
 			"service", "signup",
 			"username", req.Username,
 			"output", output,
-			"err", err,
+			"err", err.Error(),
 			"took", time.Since(begin),
 		)
 	}(time.Now())

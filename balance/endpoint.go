@@ -11,7 +11,8 @@ type balanceRequest struct {
 }
 
 type balanceResponse struct {
-	Data data `json:"data"`
+	Err  string `json:"error"`
+	Data data   `json:"data"`
 }
 
 type data struct {
@@ -25,9 +26,14 @@ func makeBalanceEndpoint(svc Servicer) endpoint.Endpoint {
 		amount, err := svc.Balance(req.UserID)
 
 		if err != nil {
-			return balanceResponse{data{""}}, nil
+			switch err {
+			case errTokenExpired:
+				return balanceResponse{Err: err.Error()}, nil
+			default:
+				return balanceResponse{Err: "Unable to fetch balance"}, nil
+			}
 		}
 
-		return balanceResponse{data{amount}}, nil
+		return balanceResponse{Data: data{amount}}, nil
 	}
 }

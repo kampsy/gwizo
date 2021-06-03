@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -36,7 +35,6 @@ func GenerateToken(userID string) (string, error) {
 func GetUserIDFromToken(t string) (string, error) {
 
 	authKey := os.Getenv("AUTH_KEY")
-	fmt.Println(t)
 
 	token, err := jwt.ParseWithClaims(
 		t,

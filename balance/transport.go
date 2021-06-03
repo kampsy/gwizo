@@ -16,11 +16,12 @@ func decodeBalanceRequest(_ context.Context, r *http.Request) (interface{}, erro
 	token := r.Header.Get("Authorization")
 	ls := strings.Split(token, " ")
 	userid, err := auth.GetUserIDFromToken(ls[1])
-	if err != nil {
-		return "", err
-	}
-	request.UserID = userid
 
+	if err != nil {
+		return request, nil
+	}
+
+	request.UserID = userid
 	return request, nil
 }
 
@@ -28,4 +29,5 @@ func decodeBalanceRequest(_ context.Context, r *http.Request) (interface{}, erro
 func encodeBalanceResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
 	w.Header().Add("Content-Type", "application/json")
 	return json.NewEncoder(w).Encode(response)
+
 }

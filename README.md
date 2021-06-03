@@ -1,2 +1,2 @@
-# dazwallet
-Daz Wallet Microservice.
+# Dazwallet
+wallet api server

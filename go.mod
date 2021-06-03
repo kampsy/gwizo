@@ -4,9 +4,11 @@ go 1.15
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/dustin/go-humanize v0.0.0-20171111073723-bb3d318650d4
 	github.com/go-kit/kit v0.10.0
 	github.com/google/uuid v1.0.0
 	github.com/joho/godotenv v1.3.0
+	github.com/leekchan/accounting v1.0.0
 	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v1.3.0
 	github.com/shopspring/decimal v1.2.0

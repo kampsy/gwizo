@@ -12,7 +12,8 @@ type signinRequest struct {
 }
 
 type signinResponse struct {
-	Data data `json:"data"`
+	Err  string `json:"error"`
+	Data data   `json:"data"`
 }
 
 type data struct {
@@ -27,10 +28,16 @@ func makeSigninEndpoint(svc Servicer) endpoint.Endpoint {
 		req := request.(signinRequest)
 		token, err := svc.Signin(req.Username, req.Password)
 		if err != nil {
-			//
-			return signinResponse{data{"", "", 0}}, nil
+			switch err {
+			case errWrongUsernameOrPassword:
+				return signinResponse{Err: err.Error()}, nil
+			case errGeneratingJWT:
+				return signinResponse{Err: err.Error()}, nil
+			default:
+				return signinResponse{Err: "Encountered unexpected error"}, nil
+			}
 		}
 
-		return signinResponse{data{token, "", 3600}}, nil
+		return signinResponse{Data: data{token, "", 3600}}, nil
 	}
 }

@@ -13,6 +13,7 @@ type searchRequest struct {
 }
 
 type searchResponse struct {
+	Err  string `json:"error"`
 	Data []data `json:"data"`
 }
 type data struct {
@@ -30,9 +31,9 @@ func makeSearchEndpoint(svc Servicer) endpoint.Endpoint {
 		searchResult, err := svc.Search(req.Query)
 
 		if err != nil {
-			return searchResponse{searchResult}, nil
+			return searchResponse{Err: "unxpected error"}, nil
 		}
 
-		return searchResponse{searchResult}, nil
+		return searchResponse{Data: searchResult}, nil
 	}
 }

@@ -21,14 +21,15 @@ type service struct {
 	db *gorm.DB
 }
 
+var errWrongUsernameOrPassword = errors.New("Wrong username or password")
+var errGeneratingJWT = errors.New("error generating jwt")
+
 func (svc service) Signin(username, password string) (string, error) {
 	db := svc.db
 
-	formID := "phone_number"
 	sql := "phone_number = ?"
 	// user is trying to log in using their email address .
 	if strings.Contains(username, "@") {
-		formID = "email"
 		sql = "email = ?"
 	}
 
@@ -37,7 +38,7 @@ func (svc service) Signin(username, password string) (string, error) {
 	err := db.Where(sql, username).First(&user).Error
 	if err != nil {
 		log.Println("Unable find user: ", err)
-		return "", errors.New(fmt.Sprintf("Wrong %s or password. Try again.", formID))
+		return "", errWrongUsernameOrPassword
 	}
 
 	err = bcrypt.CompareHashAndPassword(user.Password, []byte(password))
@@ -48,22 +49,19 @@ func (svc service) Signin(username, password string) (string, error) {
 		err := db.Model(&database.Users{}).Where("user_id = ?", user.UserID).Update("login_attempts", user.LoginAttempts+1).Error
 		if err != nil {
 			log.Print("Unable to update user login attemps: ", err)
-			return "", errors.New(fmt.Sprintf("Wrong %s or password. Try again.", username))
+			return "", errWrongUsernameOrPassword
 		}
 
-		return "", errors.New(fmt.Sprintf("Wrong %s or password. Try again.", username))
+		return "", errWrongUsernameOrPassword
 	}
 
 	// jwt
 	accessToken, err := auth.GenerateToken(user.UserID)
 	if err != nil {
 		log.Println(err)
-		return fmt.Sprintf("Wrong %s or password. Try again.", username), err
+		return "", errGeneratingJWT
 	}
 	fmt.Println(user.UserID)
 
 	return accessToken, nil
 }
-
-var ErrSignin = errors.New("Unable to signin")
-var ErrThreeLoginAttempts = errors.New("3 login attemps, please try again after 30 seconds.")

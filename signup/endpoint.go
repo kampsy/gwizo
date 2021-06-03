@@ -30,7 +30,7 @@ func addSignupData(req signupRequest) signupData {
 
 type signupRequest struct {
 	FirstName   string `json:"firstname,omitempty"`
-	LastName    string `json:"lastname.omitempty"`
+	LastName    string `json:"lastname,omitempty"`
 	PhoneNumber string `json:"phonenumber"`
 	Password    string `json:"password"`
 	Pin         string `json:"pin"`
@@ -39,7 +39,8 @@ type signupRequest struct {
 }
 
 type signupResponse struct {
-	Data data `json:"data"`
+	Err  string `json:"error"`
+	Data data   `json:"data"`
 }
 
 type data struct {
@@ -53,8 +54,8 @@ func makeSignupEndpoint(svc Servicer) endpoint.Endpoint {
 		sd := addSignupData(req)
 		msg, err := svc.Signup(sd)
 		if err != nil {
-			return signupResponse{}, err
+			return nil, err
 		}
-		return signupResponse{data{msg}}, nil
+		return signupResponse{Data: data{msg}}, nil
 	}
 }

@@ -17,6 +17,5 @@ func BalanceHandler(db *gorm.DB, logger log.Logger, requestCount metrics.Counter
 		decodeBalanceRequest,
 		encodeBalanceResponse,
 	)
-
 	return handler
 }

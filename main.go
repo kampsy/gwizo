@@ -7,6 +7,7 @@ import (
 	"dazwallet/send"
 	"dazwallet/signin"
 	"dazwallet/signup"
+	"dazwallet/transactions"
 	"flag"
 	"fmt"
 	stdlog "log"
@@ -46,7 +47,7 @@ func main() {
 
 	// mysql database
 	host := flag.String("host", "0.0.0.0", "The ip or host name E.G. 0.0.0.0")
-	port := flag.Int("port", 8080, "An open port E.G. 8080")
+	port := flag.Int("port", 4000, "An open port E.G. 4000")
 	mysqlStr := flag.String("mysql", "dev", "Mysql credentials used, dev or pro")
 	flag.Parse()
 
@@ -90,12 +91,15 @@ func main() {
 	searchHandler := search.SearchHandler(db, logger, requestCount, requestLatency)
 	// Send service handler
 	sendHandler := send.SendHandler(db, logger, requestCount, requestLatency)
+	// Transactions
+	transHandler := transactions.TransHandler(db, logger, requestCount, requestLatency)
 
 	http.Handle("/signup", signupHandler)
 	http.Handle("/signin", httpMethodCtl("POST", signinHandler))
 	http.Handle("/balance", balanceHandler)
 	http.Handle("/search", searchHandler)
 	http.Handle("/send", sendHandler)
+	http.Handle("/transactions", transHandler)
 	http.Handle("/metrics", httpMethodCtl("GET", promhttp.Handler()))
 	fmt.Printf("Running on %s:%d\n", *host, *port)
 	stdlog.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", *host, *port), nil))

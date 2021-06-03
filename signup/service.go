@@ -5,6 +5,8 @@ import (
 	"dazwallet/database"
 	"fmt"
 
+	"github.com/pkg/errors"
+
 	// "log"
 	// "strings"
 	"time"
@@ -21,6 +23,8 @@ type Servicer interface {
 type service struct {
 	db *gorm.DB
 }
+
+var errUnableToCreateUser = errors.New("Unable to create user")
 
 func (svc service) Signup(data signupData) (string, error) {
 	db := svc.db
@@ -78,7 +82,8 @@ func (svc service) Signup(data signupData) (string, error) {
 	//Creating the User profile and Account
 	err = db.Create(&user).Error
 	if err != nil {
-		return "failed to create a user!!!!!!!!", err
+		fmt.Println(err)
+		return "", errUnableToCreateUser
 	}
 
 	var msg = "user successfully created!!!!!!"
